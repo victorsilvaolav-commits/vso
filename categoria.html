@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portafolio · Víctor Silva</title>
+  <meta name="theme-color" content="#1A2129">
+  <link rel="icon" href="img/vso-oficial-simbolo-oscuro.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilo.css?v=3d">
+</head>
+<body data-pagina="categoria">
+
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html" aria-label="Víctor Silva, inicio"><img src="img/vso-simbolo.svg" alt=""><span>Víctor Silva</span></a>
+      <button class="boton-menu" aria-label="Abrir menú" aria-expanded="false"><span></span></button>
+      <nav class="menu" aria-label="Principal">
+        <div class="desplegar">
+          <button aria-expanded="false" aria-haspopup="true">Portafolio <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+          <div class="submenu"></div>
+        </div>
+        <a href="index.html#cuadros">Cuadros</a>
+        <a href="index.html#sobre-mi">Sobre mí</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Portada de la categoría (se arma desde js/datos.js) -->
+  <section class="portada-cat"></section>
+
+  <section class="seccion" id="galeria"><div class="contenedor"></div></section>
+
+  <nav class="navegacion-cat" aria-label="Otras categorías"></nav>
+
+  <footer class="pie">
+    <div class="contenedor"><span>© <span data-anio>2026</span> Víctor Silva · Diseño · Fotografía</span><a href="index.html">Volver al inicio</a></div>
+  </footer>
+
+  <script src="js/datos.js"></script>
+  <script src="js/comun.js"></script>
+</body>
+</html>

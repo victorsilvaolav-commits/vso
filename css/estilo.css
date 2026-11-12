@@ -1,0 +1,425 @@
+/* ===== Víctor Silva · Diseño y Fotografía ===== */
+@font-face { font-family: 'Fraunces'; src: url('../fuentes/Fraunces-VF.ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('../fuentes/Manrope-VF.ttf') format('truetype'); font-weight: 200 800; font-display: swap; }
+/* Letra manuscrita (Caveat, licencia libre OFL: fuentes/Caveat-OFL.txt) */
+@font-face { font-family: 'Caveat'; src: url('../fuentes/Caveat-VF.ttf') format('truetype'); font-weight: 400 700; font-display: swap; }
+
+:root {
+  --pizarra: #1A2129;
+  --pizarra-2: #12171D;
+  --pizarra-3: #222B35;
+  --hueso: #F0F2F5;
+  --rojo: #D94E34;
+  --gris: #A7B0BA;
+  --gris-osc: #4A5560;
+  --linea: rgba(240, 242, 245, .12);
+  --serif: 'Fraunces', Georgia, serif;
+  --mano: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --sans: 'Manrope', system-ui, sans-serif;
+  --ancho: 1200px;
+  --margen: clamp(16px, 4vw, 48px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--pizarra); color: var(--hueso);
+  font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+.contenedor { width: min(var(--ancho), 100% - 2 * var(--margen)); margin-inline: auto; }
+.etiqueta {
+  font-size: 12px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--gris);
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.etiqueta::before { content: ""; width: 24px; height: 2px; background: var(--rojo); }
+.titulo-seccion { font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 6vw, 64px); line-height: 1.05; margin: 16px 0 0; letter-spacing: -.01em; }
+.texto-suave { color: var(--gris); max-width: 56ch; }
+
+/* ---- Esquinas de visor (firma de la marca) ---- */
+.visor { position: relative; }
+.visor::after {
+  content: ""; position: absolute; inset: var(--visor-inset, -12px); pointer-events: none;
+  --c: var(--rojo); --l: var(--visor-l, 26px); --t: var(--visor-t, 2px);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--t),
+    linear-gradient(var(--c), var(--c)) top left / var(--t) var(--l),
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--t),
+    linear-gradient(var(--c), var(--c)) top right / var(--t) var(--l),
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--t),
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) var(--l),
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--t),
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) var(--l);
+  background-repeat: no-repeat;
+  transition: inset .45s cubic-bezier(.2, .8, .2, 1), opacity .3s;
+}
+
+/* ---- Encabezado ---- */
+.encabezado {
+  position: fixed; inset: 0 0 auto 0; z-index: 50; height: 68px;
+  display: flex; align-items: center;
+  background: rgba(26, 33, 41, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--linea);
+  transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+}
+.encabezado.oculto { transform: translateY(-100%); }
+.encabezado .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca img { width: 52px; height: auto; }
+.marca span { font-size: 12px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; }
+.menu { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; }
+.menu > a, .menu .desplegar > button { padding: 8px 0; color: var(--gris); transition: color .2s; position: relative; }
+.menu > a:hover, .menu .desplegar > button:hover, .menu a[aria-current="page"], .menu .desplegar.activo > button { color: var(--hueso); }
+.menu a[aria-current="page"]::after, .menu .desplegar.activo > button::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--rojo);
+}
+.desplegar { position: relative; }
+.desplegar > button { display: inline-flex; align-items: center; gap: 6px; }
+.desplegar > button svg { width: 10px; transition: transform .2s; }
+.desplegar.abierto > button svg { transform: rotate(180deg); }
+.submenu {
+  position: absolute; top: calc(100% + 14px); left: -20px; min-width: 230px; padding: 10px 0;
+  background: var(--pizarra-2); border: 1px solid var(--linea);
+  opacity: 0; visibility: hidden; transform: translateY(-6px); transition: .2s;
+}
+.desplegar.abierto .submenu { opacity: 1; visibility: visible; transform: none; }
+.submenu a { display: flex; justify-content: space-between; gap: 16px; padding: 9px 20px; color: var(--gris); }
+.submenu a:hover, .submenu a[aria-current="page"] { color: var(--hueso); background: var(--pizarra-3); }
+.submenu small { color: var(--gris-osc); font-size: 12px; }
+.boton-menu { display: none; width: 40px; height: 40px; position: relative; }
+.boton-menu span, .boton-menu span::before, .boton-menu span::after {
+  position: absolute; left: 9px; width: 22px; height: 2px; background: var(--hueso); content: ""; transition: .25s;
+}
+.boton-menu span { top: 19px; }
+.boton-menu span::before { left: 0; top: -7px; }
+.boton-menu span::after { left: 0; top: 7px; }
+.menu-abierto .boton-menu span { background: transparent; }
+.menu-abierto .boton-menu span::before { top: 0; transform: rotate(45deg); }
+.menu-abierto .boton-menu span::after { top: 0; transform: rotate(-45deg); }
+
+@media (max-width: 760px) {
+  .marca span { display: none; }
+  .boton-menu { display: block; }
+  .menu {
+    position: fixed; inset: 68px 0 auto 0; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--pizarra-2); border-bottom: 1px solid var(--linea); padding: 8px var(--margen) 20px;
+    max-height: calc(100svh - 68px); overflow-y: auto;
+    opacity: 0; visibility: hidden; transform: translateY(-8px); transition: .25s;
+  }
+  .menu-abierto .menu { opacity: 1; visibility: visible; transform: none; }
+  .menu > a, .menu .desplegar > button { padding: 14px 0; font-size: 18px; width: 100%; text-align: left; border-bottom: 1px solid var(--linea); }
+  .menu a[aria-current="page"]::after, .menu .desplegar.activo > button::after { display: none; }
+  .submenu { position: static; opacity: 1; visibility: visible; transform: none; display: none; border: 0; background: none; padding: 0 0 8px; }
+  .desplegar.abierto .submenu { display: block; }
+  .submenu a { padding: 10px 0 10px 16px; }
+  .submenu a:hover { background: none; }
+}
+
+/* ---- INTRO ---- */
+.intro {
+  position: relative; height: 100svh; min-height: 520px; background: var(--hueso); color: var(--pizarra);
+  overflow: hidden; display: grid; place-items: center; cursor: default;
+}
+.intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.intro .logo-intro { position: relative; width: min(78vw, 360px, 50svh); height: auto; overflow: visible; }
+.logo-intro .letra, .logo-intro .texto { opacity: 0; }
+.logo-intro .encuadre path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.intro.final .logo-intro .letra { opacity: 1; transition: opacity .5s; }
+.intro.final .logo-intro .encuadre path { stroke-dashoffset: 0; transition: stroke-dashoffset 1s cubic-bezier(.6, 0, .2, 1) .15s; }
+.intro.final .logo-intro .texto { opacity: 1; transition: opacity .8s .7s; }
+.intro .rotulo {
+  position: absolute; left: 0; right: 0; bottom: 14svh; text-align: center;
+  font-size: 13px; font-weight: 600; letter-spacing: .4em; text-transform: uppercase; color: var(--gris-osc);
+  opacity: 0; transition: opacity .35s;
+}
+.intro .rotulo.visible { opacity: 1; }
+.intro .desliza {
+  position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--gris-osc);
+  opacity: 0; transition: opacity .6s 1.2s;
+}
+.intro .desliza i { width: 1px; height: 36px; background: var(--gris-osc); animation: baja 1.8s ease-in-out infinite; transform-origin: top; }
+.intro.final .desliza { opacity: 1; }
+@keyframes baja { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+.intro .repetir, .intro .saltar {
+  position: absolute; right: var(--margen); bottom: 24px; font-size: 12px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gris-osc); padding: 8px 0; transition: opacity .4s, color .2s;
+}
+.intro .repetir:hover, .intro .saltar:hover { color: var(--rojo); }
+.intro .repetir { opacity: 0; pointer-events: none; }
+.intro.final .repetir { opacity: 1; pointer-events: auto; transition-delay: 1.4s; }
+.intro.final .saltar { opacity: 0; pointer-events: none; }
+
+/* ---- Antes / después ---- */
+.seccion { padding: clamp(80px, 12vw, 140px) 0; }
+.seccion.oscura { background: var(--pizarra-2); }
+.antes-despues .contenedor { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(40px, 7vw, 100px); align-items: center; }
+.antes-despues .boton { margin-top: 32px; }
+@media (max-width: 860px) { .antes-despues .contenedor { grid-template-columns: 1fr; } }
+
+.comparador {
+  --p: 100%;
+  position: relative; width: 100%; aspect-ratio: 1071 / 1208; user-select: none; touch-action: pan-y;
+  cursor: ew-resize; --visor-inset: -14px;
+}
+.comparador img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; border-radius: 18px; }
+.comparador .despues { clip-path: inset(0 0 0 var(--p)); }
+.comparador .divisor { position: absolute; top: 0; bottom: 0; left: var(--p); width: 2px; margin-left: -1px; background: var(--hueso); pointer-events: none; }
+.comparador .perilla {
+  position: absolute; top: 50%; left: var(--p); width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+  background: var(--hueso); color: var(--pizarra); display: grid; place-items: center; box-shadow: 0 4px 18px rgba(0,0,0,.35);
+}
+.comparador .perilla:focus-visible { outline: 2px solid var(--rojo); outline-offset: 3px; }
+.comparador .perilla svg { width: 20px; }
+.comparador .rotulo-img {
+  position: absolute; top: 14px; padding: 5px 10px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  background: rgba(18, 23, 29, .7); color: var(--hueso); transition: opacity .3s; pointer-events: none;
+}
+.comparador .r-antes { left: 14px; }
+.comparador .r-despues { right: 14px; }
+
+.boton {
+  display: inline-flex; align-items: center; gap: 12px; padding: 14px 26px; border: 1px solid var(--hueso); border-radius: 999px;
+  font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; transition: .25s;
+}
+.boton:hover { background: var(--hueso); color: var(--pizarra); }
+.boton svg { width: 16px; transition: transform .25s; }
+.boton:hover svg { transform: translateX(4px); }
+
+/* ---- Portafolio (tarjetas de categoría) ---- */
+.cabecera-seccion { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 56px; }
+.categorias { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+@media (max-width: 960px) { .categorias { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .categorias { grid-template-columns: 1fr; } }
+.tarjeta { display: block; }
+.tarjeta .marco { position: relative; aspect-ratio: 4 / 5; --visor-inset: 14px; --visor-l: 22px; }
+.tarjeta .marco::after { opacity: 0; --visor-inset: 34px; }
+.tarjeta:hover .marco::after, .tarjeta:focus-visible .marco::after { opacity: 1; inset: 14px; }
+.tarjeta .marco img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.92); transition: transform .8s cubic-bezier(.2, .8, .2, 1), filter .4s; }
+.tarjeta .marco .recorte { position: absolute; inset: 0; overflow: hidden; background: var(--pizarra-3); }
+.tarjeta:hover .marco img { transform: scale(1.04); filter: saturate(1.05); }
+.tarjeta .info { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 16px; }
+.tarjeta h3 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 26px; line-height: 1.15; }
+.tarjeta .cuenta { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gris); white-space: nowrap; }
+.tarjeta.pronto { cursor: default; }
+.tarjeta.pronto .recorte { display: grid; place-items: center; background: var(--pizarra-3); }
+.tarjeta.pronto .recorte span { font-size: 12px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--gris); }
+.tarjeta.pronto .marco::after { opacity: .5; inset: 14px; }
+
+/* ---- Sobre mí / contacto ---- */
+.sobre .contenedor { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(40px, 7vw, 100px); }
+@media (max-width: 860px) { .sobre .contenedor { grid-template-columns: 1fr; } }
+.sobre p { margin: 0 0 18px; color: var(--gris); font-size: 18px; }
+.sobre p strong { color: var(--hueso); font-weight: 600; }
+.datos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--linea); }
+.datos b { display: block; font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--hueso); }
+.datos span { font-size: 13px; color: var(--gris); }
+@media (max-width: 480px) { .datos { grid-template-columns: 1fr; } }
+
+.contacto { text-align: center; }
+.contacto .titulo-seccion { margin-bottom: 24px; }
+.contacto .texto-suave { margin: 0 auto 40px; }
+.contacto .enlaces { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+.pie { padding: 32px 0; border-top: 1px solid var(--linea); font-size: 13px; color: var(--gris-osc); }
+.pie .contenedor { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ---- Página de categoría ---- */
+.portada-cat {
+  position: relative; min-height: 100svh; display: grid; align-items: center; padding: 120px 0 80px; overflow: hidden;
+}
+.portada-cat .fondo { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(28px) brightness(.45) saturate(1.1); transform: scale(1.1); }
+.portada-cat .contenedor { position: relative; display: grid; grid-template-columns: 1fr minmax(0, 520px); gap: clamp(40px, 7vw, 100px); align-items: center; }
+.portada-cat h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(48px, 9vw, 104px); line-height: .98; margin: 18px 0 20px; letter-spacing: -.02em; }
+.portada-cat p { color: var(--hueso); opacity: .8; font-size: 18px; max-width: 40ch; margin: 0 0 36px; }
+.portada-cat .foto { --visor-inset: -16px; }
+.portada-cat .foto img { width: 100%; max-height: 70svh; object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+@media (max-width: 860px) {
+  .portada-cat { min-height: auto; padding-top: 110px; }
+  .portada-cat .contenedor { grid-template-columns: 1fr; }
+  .portada-cat .foto { max-width: 480px; }
+}
+
+.galeria { columns: 3 300px; column-gap: clamp(16px, 2vw, 28px); }
+.galeria figure { break-inside: avoid; margin: 0 0 clamp(16px, 2vw, 28px); }
+.galeria button { display: block; width: 100%; position: relative; --visor-inset: 12px; --visor-l: 20px; }
+.galeria button::after { opacity: 0; inset: 28px; }
+.galeria button:hover::after, .galeria button:focus-visible::after { opacity: 1; inset: 12px; }
+.galeria img { width: 100%; height: auto; transition: filter .3s; }
+.galeria button:hover img { filter: brightness(1.06); }
+/* Par de fotos una al lado de la otra (también en celular) */
+.juntas { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(8px, 2vw, 28px); margin-bottom: clamp(16px, 2vw, 28px); }
+.juntas figure { margin: 0; }
+.juntas button { display: block; width: 100%; position: relative; --visor-inset: 12px; --visor-l: 20px; }
+.juntas button::after { opacity: 0; inset: 28px; }
+.juntas button:hover::after, .juntas button:focus-visible::after { opacity: 1; inset: 12px; }
+.juntas img { width: 100%; height: auto; transition: filter .3s; }
+.juntas button:hover img { filter: brightness(1.06); }
+.juntas figcaption, .galeria figcaption { padding-top: 10px; font-size: 13px; color: var(--gris); }
+.bloque-comparar { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: clamp(32px, 6vw, 80px); align-items: center; margin-bottom: clamp(64px, 9vw, 110px); }
+@media (max-width: 860px) { .bloque-comparar { grid-template-columns: 1fr; } }
+.vacio { padding: 80px 0; text-align: center; color: var(--gris); }
+
+.navegacion-cat { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--linea); }
+.navegacion-cat a { padding: 40px var(--margen); display: flex; flex-direction: column; gap: 6px; transition: background .25s; }
+.navegacion-cat a:hover { background: var(--pizarra-3); }
+.navegacion-cat a + a { text-align: right; border-left: 1px solid var(--linea); }
+.navegacion-cat small { font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gris); }
+.navegacion-cat b { font-family: var(--serif); font-size: clamp(22px, 3vw, 34px); font-weight: 600; }
+
+/* ---- Visor (lightbox) ---- */
+.visor-fotos {
+  position: fixed; inset: 0; z-index: 100; background: rgba(12, 15, 19, .96);
+  display: grid; grid-template-rows: auto 1fr auto; opacity: 0; visibility: hidden; transition: .3s;
+}
+.visor-fotos.abierto { opacity: 1; visibility: visible; }
+.visor-fotos .barra { display: flex; justify-content: space-between; align-items: center; padding: 16px var(--margen); font-size: 13px; color: var(--gris); letter-spacing: .1em; }
+.visor-fotos .centro { position: relative; display: grid; place-items: center; padding: 0 clamp(16px, 7vw, 100px); min-height: 0; }
+.visor-fotos .centro img { max-width: 100%; max-height: calc(100svh - 150px); object-fit: contain; }
+.visor-fotos .titulo { padding: 16px var(--margen) 24px; text-align: center; font-family: var(--serif); font-size: 20px; }
+.visor-fotos .flecha { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; display: grid; place-items: center; color: var(--gris); transition: color .2s; }
+.visor-fotos .flecha:hover { color: var(--hueso); }
+.visor-fotos .flecha svg { width: 26px; }
+.visor-fotos .ant { left: clamp(0px, 2vw, 32px); }
+.visor-fotos .sig { right: clamp(0px, 2vw, 32px); }
+.visor-fotos .cerrar { font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--hueso); padding: 8px 0; }
+.visor-fotos .cerrar:hover { color: var(--rojo); }
+
+/* ---- Aparecer al hacer scroll ---- */
+.aparece { opacity: 0; transform: translateY(24px); transition: opacity .8s, transform .8s cubic-bezier(.2, .8, .2, 1); }
+.aparece.visto { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aparece { opacity: 1; transform: none; transition: none; }
+  .intro .desliza i { animation: none; }
+}
+/* =========================================================
+   CURVAS Y LETRA A MANO (versión 2)
+   ========================================================= */
+.mano { font-family: var(--mano); font-weight: 500; line-height: 1.1; }
+
+/* Olas entre secciones: el color de la sección anterior "cae" con borde curvo */
+.seccion, .mirada { position: relative; }
+.ola { position: absolute; top: -1px; left: 0; width: 100%; height: clamp(36px, 6vw, 90px); fill: var(--color); pointer-events: none; z-index: 3; }
+.seccion > .ola + .contenedor { position: relative; }
+
+/* Subrayado hecho a mano bajo una palabra del título */
+.subrayar { position: relative; display: inline-block; white-space: nowrap; }
+.subrayar svg { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .32em; overflow: visible; }
+.subrayar path { fill: none; stroke: var(--rojo); stroke-width: 4.5; stroke-linecap: round;
+  stroke-dasharray: 300; stroke-dashoffset: 300; transition: stroke-dashoffset 1.1s cubic-bezier(.6, 0, .2, 1) .5s; }
+.visto .subrayar path { stroke-dashoffset: 0; }
+
+/* Flechas dibujadas a mano */
+.flecha-mano { display: inline-block; width: 92px; height: 46px; vertical-align: middle; margin-left: 10px; overflow: visible; }
+.flecha-mano path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.nota-comparar { margin: 36px 0 0; font-size: clamp(26px, 2.6vw, 32px); color: var(--rojo); transform: rotate(-4deg); transform-origin: left; }
+@media (max-width: 860px) { .nota-comparar .flecha-mano { transform: rotate(80deg); width: 60px; } }
+.nota-elige { margin: 14px 0 0; font-size: 30px; color: var(--rojo); transform: rotate(-3deg); }
+.nota-elige .flecha-mano.abajo { width: 40px; height: 48px; margin-left: 4px; }
+.nota-hablemos { margin: -8px 0 22px; font-size: clamp(30px, 3.4vw, 40px); color: var(--rojo); transform: rotate(-5deg); }
+
+/* ---- MI MIRADA: escena fija mientras se baja ---- */
+.mirada { background: var(--pizarra); height: 100svh; }
+.mirada .escena { position: sticky; top: 0; height: 100svh; min-height: 520px; overflow: hidden; }
+.mirada.quieta { height: auto; }
+.mirada.quieta .escena { position: relative; }
+.mirada-titulo { position: absolute; left: var(--margen); right: var(--margen); top: clamp(76px, 12svh, 128px); text-align: center; z-index: 2; }
+.mirada-titulo .mano { margin: 0; font-size: clamp(28px, 3.2vw, 40px); color: var(--rojo); transform: rotate(-3deg); }
+.mirada-titulo .titulo-seccion { margin-top: 2px; font-size: clamp(30px, 4.4vw, 54px); }
+.mesa { position: absolute; z-index: 3; left: 50%; bottom: clamp(58px, 10svh, 104px); width: min(1040px, 92vw, 112svh); aspect-ratio: 100 / 46; transform: translateX(-50%); }
+.pieza { position: absolute; display: block; visibility: hidden; will-change: left, top, width, height, transform; --sombra: 0; }
+.pieza .foto {
+  position: absolute; inset: 0; overflow: hidden; background: var(--pizarra-3);
+  box-shadow: 0 calc(10px + 30px * var(--sombra)) calc(26px + 60px * var(--sombra)) rgba(0, 0, 0, calc(.35 + .3 * var(--sombra)));
+}
+.pieza img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+.pieza.puesta:hover img, .pieza.puesta:focus-visible img { transform: scale(1.08); }
+.pieza:focus-visible { outline: none; }
+.pieza:focus-visible .foto { outline: 2px solid var(--rojo); outline-offset: 4px; }
+.pieza .nota {
+  position: absolute; left: 50%; white-space: nowrap; font-family: var(--mano); font-size: clamp(17px, 1.9vw, 26px); color: var(--hueso);
+  opacity: 0; transform: translate(-50%, 6px) rotate(-3deg); transition: opacity .5s, transform .5s, color .2s; pointer-events: none;
+}
+.pieza.fila-1 .nota { bottom: calc(100% + 2px); }
+.pieza.fila-2 .nota { top: calc(100% + 4px); }
+.pieza.puesta .nota { opacity: .85; transform: translate(-50%, 0) rotate(-3deg); }
+.pieza.puesta:hover .nota { color: var(--rojo); opacity: 1; }
+.mirada .pista {
+  position: absolute; left: 0; right: 0; bottom: clamp(14px, 3svh, 30px); margin: 0; text-align: center;
+  font-size: clamp(20px, 2vw, 26px); color: var(--gris); opacity: 0; transition: opacity .6s;
+}
+.escena.completa .pista { opacity: 1; }
+@media (max-width: 700px) {
+  .mesa { width: 96vw; bottom: auto; top: 46%; }
+  .pieza .nota { font-size: 15px; }
+}
+
+/* ---- Tarjetas de categoría en arco, con un ritmo desordenado ---- */
+.tarjeta .marco .recorte { border-radius: 50% 50% 14px 14px / 36% 36% 14px 14px; }
+.tarjeta .marco::after { display: none; }
+.tarjeta .info { justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
+.tarjeta .cuenta { font-family: var(--mano); font-size: 22px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--rojo); }
+@media (min-width: 961px) {
+  .categorias { row-gap: clamp(40px, 5vw, 72px); }
+  .categorias > :nth-child(3n + 2) { transform: translateY(64px); }
+  .categorias > :nth-child(3n + 2).aparece:not(.visto) { transform: translateY(88px); }
+  #portafolio { padding-bottom: calc(clamp(80px, 12vw, 140px) + 64px); }
+}
+
+/* ---- Sobre mí: retrato en arco ---- */
+.retrato { margin: 44px 0 0; display: flex; align-items: flex-end; gap: 18px; }
+.retrato .arco { display: block; width: min(260px, 52vw); aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px 18px 18px; flex: none; }
+.retrato img { width: 100%; height: 100%; object-fit: cover; }
+.retrato figcaption { font-size: clamp(24px, 2.4vw, 30px); color: var(--rojo); transform: rotate(-6deg); margin-bottom: 24px; }
+
+.contacto .datos-contacto { margin: 28px 0 0; font-size: 14px; color: var(--gris); letter-spacing: .04em; overflow-wrap: anywhere; }
+
+/* =========================================================
+   CUADROS DE GENERACIÓN (sección clara con cuadro 3D)
+   ========================================================= */
+.cuadros { background: var(--hueso); color: var(--pizarra); overflow: hidden; }
+.cuadros .etiqueta, .cuadros .texto-suave { color: var(--gris-osc); }
+.cuadros .boton { border-color: var(--pizarra); margin-top: 32px; }
+.cuadros .boton:hover { background: var(--pizarra); color: var(--hueso); }
+.cuadros-grid { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: clamp(40px, 7vw, 100px); align-items: center; }
+@media (max-width: 860px) { .cuadros-grid { grid-template-columns: 1fr; } }
+
+.cuadros-miniaturas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.cuadros-miniaturas button { width: 50px; padding: 0; border: 2px solid transparent; border-radius: 4px; overflow: hidden; opacity: .55; transition: opacity .25s, border-color .25s, transform .25s; }
+.cuadros-miniaturas button img { width: 100%; height: auto; aspect-ratio: 5 / 8; object-fit: cover; }
+.cuadros-miniaturas button:hover { opacity: .9; transform: translateY(-2px); }
+.cuadros-miniaturas button[aria-pressed="true"] { opacity: 1; border-color: var(--rojo); }
+.cuadros-miniaturas button:focus-visible { outline: 2px solid var(--rojo); outline-offset: 2px; }
+
+/* Cuadro 3D: modelo de Blender del marco de pino (img/cuadros/3d/cuadro.glb) en <model-viewer>.
+   Antes de que cargue el visor se ve el póster. */
+.cuadro3d-escena { display: grid; justify-items: center; }
+.cuadro3d-escena model-viewer {
+  display: block; width: 100%; max-width: 480px; height: auto; aspect-ratio: 4 / 5; background: transparent;
+  --poster-color: transparent; --progress-bar-color: var(--rojo); --progress-bar-height: 2px;
+}
+.cuadro3d-escena model-viewer:focus-visible { outline: 2px solid var(--rojo); outline-offset: 4px; }
+.cuadro3d-escena .poster { width: 100%; height: 100%; object-fit: contain; }
+.nota-cuadro { margin: 10px 0 0; font-size: clamp(24px, 2.4vw, 30px); color: var(--rojo); transform: rotate(-3deg); }
+
+.linea-tiempo { margin-top: clamp(72px, 10vw, 120px); }
+.linea-tiempo h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(24px, 3vw, 34px); margin: 0 0 30px; }
+.tiempo { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 34px); }
+.tiempo::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: rgba(26, 33, 41, .14); }
+.tiempo li { position: relative; padding-top: 36px; }
+.tiempo li::before { content: ""; position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--hueso); border: 2px solid var(--gris-osc); }
+.tiempo li.actual::before { background: var(--rojo); border-color: var(--rojo); }
+.tiempo figure { margin: 0; }
+.tiempo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; background: #e2e6ea; border-radius: 8px; padding: 10px; }
+.tiempo figcaption { font-size: 14px; line-height: 1.55; color: var(--gris-osc); }
+.tiempo b { display: block; margin: 16px 0 4px; font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--pizarra); }
+@media (max-width: 860px) { .tiempo { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tiempo::before { display: none; } }
+@media (max-width: 460px) { .tiempo { grid-template-columns: 1fr; } }
