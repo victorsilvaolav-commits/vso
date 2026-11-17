@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Víctor Silva · Diseño y Fotografía</title>
-  <meta name="description" content="Portafolio de Víctor Silva: fotografía nocturna, naturaleza, viajes y fotomontajes.">
+  <meta name="description" content="Portafolio de Víctor Silva, diseñador gráfico y fotógrafo de Curicó: fotos de noche, naturaleza, conciertos, marchas y fotomontajes.">
   <meta name="theme-color" content="#1A2129">
   <link rel="icon" href="img/vso-oficial-simbolo-oscuro.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/estilo.css?v=3d">
+  <link rel="stylesheet" href="css/estilo.css?v=7">
 </head>
 <body data-pagina="inicio">
 
@@ -39,10 +39,8 @@
     <button class="repetir">↻ Repetir</button>
   </section>
 
-  <!-- 2 · MI MIRADA: 8 fotos que salen de los costados, se muestran en grande y se ordenan
-       como en el boceto (fila de arriba: 2 5 6 1 · fila de abajo: 4 7 8 3). Animación en js/mirada.js -->
+  <!-- 2 · MI MIRADA: 8 fotos cuadradas, quietas (sin animación) -->
   <section class="mirada" id="mirada" aria-label="Mi mirada en ocho fotos">
-    <svg class="ola" style="--color: var(--hueso)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V24C1180 104 900 118 700 70S260 6 0 74Z"/></svg>
     <div class="escena">
       <div class="mirada-titulo">
         <p class="mano">así miro yo</p>
@@ -58,19 +56,18 @@
         <a class="pieza" data-n="7" data-a="1" href="categoria.html?c=animales"><span class="foto"><img src="fotos/mirada/07-abeja.jpg" alt="Abeja en una flor amarilla"></span><span class="nota">animales</span></a>
         <a class="pieza" data-n="8" data-a="1.25" href="categoria.html?c=naturaleza"><span class="foto"><img src="fotos/mirada/08-estrellas.jpg" alt="Árboles al anochecer reflejados en el agua"></span><span class="nota">naturaleza</span></a>
       </div>
-      <p class="mano pista">toca una foto para ver su sección</p>
+      <p class="mano pista">toca una foto y te llevo a su sección</p>
     </div>
   </section>
 
   <!-- 3 · CUADROS DE GENERACIÓN: diseño gráfico. El cuadro 3D es el modelo real del marco de pino (Blender),
        con los diseños 2026 dentro, y una línea de tiempo. Imágenes: herramientas web v2/armar_cuadros.py · js/cuadros.js -->
-  <section class="seccion cuadros" id="cuadros">
-    <svg class="ola" style="--color: var(--pizarra)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V50C1180 110 920 30 700 64S240 104 0 40Z"/></svg>
+  <section class="seccion clara cuadros" id="cuadros">
     <div class="contenedor cuadros-grid">
       <div class="aparece">
         <span class="etiqueta">Diseño gráfico</span>
         <h2 class="titulo-seccion">Cuadros de<br><span class="subrayar">generación<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 11C60 17 130 3 197 10"/></svg></span></h2>
-        <p class="texto-suave">Diseño los cuadros de curso y los recuerdos de licenciatura que entrega Silva Fotografías: el retrato de cada alumno, la foto del curso y la lista de la generación, armados para colgarse en la casa por muchos años.</p>
+        <p class="texto-suave">Para Silva Fotografías diseño los cuadros de curso y de licenciatura. Cada uno lleva el retrato del alumno, la foto del curso y la lista de todos sus compañeros, pensado para que quede colgado en la casa por muchos años.</p>
         <div class="cuadros-miniaturas" role="group" aria-label="Elige un diseño para verlo en el cuadro">
           <button type="button" aria-pressed="true" data-n="1" aria-label="Cuarto medio, Atención de Párvulos"><img src="img/cuadros/3d/mini-1.jpg" alt="" width="80" height="128"></button>
           <button type="button" aria-pressed="false" data-n="2" aria-label="Cuarto medio, técnico-profesional"><img src="img/cuadros/3d/mini-2.jpg" alt="" width="80" height="128"></button>
@@ -90,25 +87,15 @@
       </div>
     </div>
 
-    <div class="contenedor linea-tiempo aparece">
-      <h3>De mi cuadro de kínder a mis diseños</h3>
-      <ol class="tiempo">
-        <li><figure><img src="img/cuadros/1998.jpg" alt="Mi cuadro de kínder de 1998 en la Escuela España, con marco burdeo" width="1100" height="812" loading="lazy"><figcaption><b>1998</b>Mi cuadro de kínder en la Escuela España. Crecí rodeado de fotografías: dos fotos de 13 × 18 pegadas en cartulina y un marco de laca burdeo.</figcaption></figure></li>
-        <li><figure><img src="img/cuadros/2005.jpg" alt="Mi primer diseño: mosaico de nivel medio mayor del Centro Verbum, con retratos en óvalo" width="1100" height="815" loading="lazy"><figcaption><b>2005</b>Mi primer diseño: un mosaico con un retrato por niño, recortado en óvalo y con su nombre. Tiene detalles por pulir, pero aquí empecé.</figcaption></figure></li>
-        <li><figure><img src="img/cuadros/2025.jpg" alt="Cuadro de octavo básico de 2025" width="825" height="1100" loading="lazy"><figcaption><b>2025</b>El retrato ocupa toda la imagen y la lista del curso va encima, en letra blanca con sombra.</figcaption></figure></li>
-        <li class="actual"><figure><img src="img/cuadros/3d/impresion-1.jpg" alt="Cuadro de cuarto medio de 2026" width="1000" height="1600" loading="lazy"><figcaption><b>2026</b>Mi diseño: azul noche, filete dorado y letra serif. Retrato, fotos del curso y lista quedan ordenados en una grilla.</figcaption></figure></li>
-      </ol>
-    </div>
   </section>
 
   <!-- 3b · ANTES / DESPUÉS (fotomontaje) -->
-  <section class="seccion oscura antes-despues" id="antes-despues">
-    <svg class="ola" style="--color: var(--hueso)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V60C1100 0 800 100 520 60S120 20 0 50Z"/></svg>
+  <section class="seccion roja antes-despues" id="antes-despues">
     <div class="contenedor">
       <div class="aparece">
         <span class="etiqueta">Fotomontaje</span>
         <h2 class="titulo-seccion">Del original<br>a la <span class="subrayar">idea<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 14C50 6 120 4 197 10"/></svg></span></h2>
-        <p class="texto-suave">Una cortina verde, una camisa y un globo azul. Con edición y composición digital, la misma toma se convierte en un cielo abierto lleno de aves.</p>
+        <p class="texto-suave">La foto original es solo una cortina verde, una camisa y un globo azul. Con edición y composición, esa misma toma terminó convertida en un cielo abierto lleno de aves.</p>
         <a class="boton" href="categoria.html?c=fotomontajes">Ver fotomontajes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
         <p class="mano nota-comparar">arrastra la línea<svg class="flecha-mano" viewBox="0 0 120 60" aria-hidden="true"><path d="M4 44C34 12 76 8 110 28M96 16l15 13-17 8"/></svg></p>
       </div>
@@ -118,7 +105,6 @@
 
   <!-- 4 · PORTAFOLIO -->
   <section class="seccion" id="portafolio">
-    <svg class="ola" style="--color: var(--pizarra-2)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V40C1240 90 960 90 720 50S240 0 0 60Z"/></svg>
     <div class="contenedor">
       <div class="cabecera-seccion aparece">
         <div>
@@ -126,7 +112,7 @@
           <h2 class="titulo-seccion">Lo que <span class="subrayar">miro<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12C60 4 130 16 197 7"/></svg></span></h2>
         </div>
         <div>
-          <p class="texto-suave">Del cielo nocturno a la calle, de lo más pequeño del jardín a un matrimonio. Elige una categoría.</p>
+          <p class="texto-suave">Desde el cielo de noche hasta la calle, pasando por lo más pequeño del jardín. Elige una categoría y mira las fotos.</p>
           <p class="mano nota-elige">elige una<svg class="flecha-mano abajo" viewBox="0 0 60 70" aria-hidden="true"><path d="M14 4C40 18 44 40 34 62M22 52l12 12 10-15"/></svg></p>
         </div>
       </div>
@@ -135,20 +121,18 @@
   </section>
 
   <!-- 5 · SOBRE MÍ -->
-  <section class="seccion oscura sobre" id="sobre-mi">
-    <svg class="ola" style="--color: var(--pizarra)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V70C1200 20 980 20 720 60S300 100 0 30Z"/></svg>
+  <section class="seccion clara sobre" id="sobre-mi">
     <div class="contenedor">
       <div class="aparece">
         <span class="etiqueta">Sobre mí</span>
-        <h2 class="titulo-seccion">Precisión técnica, mirada propia</h2>
+        <h2 class="titulo-seccion">Crecí entre cámaras y hoy también diseño</h2>
         <figure class="retrato">
           <span class="arco"><img src="fotos/05-cara-en-cortes.jpg" alt="Fotomontaje de Víctor Silva: su cara en cuatro cortes" loading="lazy"></span>
-          <figcaption class="mano">ese soy yo,<br>en cuatro tiempos</figcaption>
         </figure>
       </div>
       <div class="aparece">
-        <p>Soy <strong>Víctor Silva</strong>, estudiante de Diseño Gráfico en INACAP Curicó y fotógrafo. Crecí rodeado de cámaras por mi familia, y de ahí viene mi forma de mirar.</p>
-        <p>Combino la parte técnica de la fotografía (la exposición larga para el cielo, el macro para lo pequeño) con la composición y la comunicación visual del diseño. Ordeno la imagen con precisión, pero siempre le pongo mi propia mirada.</p>
+        <p>Soy <strong>Víctor Silva</strong>, estudio Diseño Gráfico en INACAP Curicó y hago fotografía hace años. En mi familia siempre hubo cámaras, así que crecí mirando a través de un visor, y de ahí viene mi forma de ver las cosas.</p>
+        <p>Me gusta la parte técnica de la foto, como la exposición larga para sacar el cielo de noche o el macro para lo más pequeño, pero también me importa cómo se ordena la imagen y qué comunica, que es lo que aprendo en diseño. Trato de que cada foto quede bien hecha y que además se note que la hice yo.</p>
         <div class="datos">
           <div><b>Fotografía</b><span>Nocturna, macro, calle y eventos</span></div>
           <div><b>Diseño</b><span>Identidad y composición</span></div>
@@ -160,12 +144,11 @@
 
   <!-- 6 · CONTACTO -->
   <section class="seccion contacto" id="contacto">
-    <svg class="ola" style="--color: var(--pizarra-2)" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H1440V36C1180 96 940 40 720 70S260 110 0 44Z"/></svg>
     <div class="contenedor aparece">
       <span class="etiqueta">Contacto</span>
       <h2 class="titulo-seccion">¿Trabajamos <span class="subrayar">juntos?<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9C70 15 140 3 197 12"/></svg></span></h2>
       <p class="mano nota-hablemos">¡hablemos!</p>
-      <p class="texto-suave">Fotografía, fotomontaje o diseño. Escríbeme y conversamos.</p>
+      <p class="texto-suave">Si necesitas fotos, un fotomontaje o un diseño, escríbeme y lo conversamos.</p>
       <div class="enlaces">
         <a class="boton" href="mailto:victorsilvaolav@gmail.com">Correo</a>
         <a class="boton" href="https://wa.me/56987579330" target="_blank" rel="noopener">WhatsApp</a>
@@ -180,9 +163,8 @@
   </footer>
 
   <script src="js/datos.js"></script>
-  <script src="js/comun.js"></script>
-  <script src="js/intro.js"></script>
-  <script src="js/mirada.js"></script>
-  <script src="js/cuadros.js?v=3f"></script>
+  <script src="js/comun.js?v=6"></script>
+  <script src="js/intro.js?v=3"></script>
+  <script src="js/cuadros.js?v=3g"></script>
 </body>
 </html>

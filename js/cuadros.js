@@ -28,12 +28,18 @@
 
   // Pone el diseño n (img/cuadros/3d/impresion-n.jpg) en la impresión del cuadro
   const texturas = {};
+  let pedido = null;   // el último diseño elegido: si una textura llega tarde, no pisa a la más nueva
   async function ponerDiseno(n) {
+    pedido = n;
     if (!mv.model) return;
-    const info = mv.model.getMaterialByName('Impresion').pbrMetallicRoughness.baseColorTexture;
+    const mat = mv.model.getMaterialByName('Impresion');
+    if (!mat) return;
     const url = LOCAL ? window.CUADRO3D_LOCAL['impresion-' + n] : 'img/cuadros/3d/impresion-' + n + '.jpg';
-    texturas[n] = texturas[n] || await mv.createTexture(url, 'image/jpeg');
-    info.setTexture(texturas[n]);
+    texturas[n] = texturas[n] || mv.createTexture(url, 'image/jpeg');
+    let tex;
+    try { tex = await texturas[n]; } catch (e) { delete texturas[n]; return; }   // si falla, se reintenta al volver a elegirlo
+    if (pedido !== n) return;
+    mat.pbrMetallicRoughness.baseColorTexture.setTexture(tex);
   }
 
   // El modelo trae un diseño de 2025: apenas carga se cambia por el diseño elegido (el 1 de partida).

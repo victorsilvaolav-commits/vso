@@ -9,7 +9,7 @@ window.PORTAFOLIO = [
  {
   "id": "matrimonios",
   "titulo": "Matrimonios",
-  "bajada": "Ceremonias, celebraciones y la gente que las hace especiales.",
+  "bajada": "Ceremonias y celebraciones, y sobre todo la gente que hace especial ese día.",
   "portada": "matrimonios/34-matrimonio-brindis",
   "fotos": [
    {
@@ -57,7 +57,7 @@ window.PORTAFOLIO = [
  {
   "id": "fotomontajes",
   "titulo": "Fotomontajes",
-  "bajada": "Ediciones y composiciones digitales hechas por mí. De la foto original a la idea.",
+  "bajada": "Ediciones y composiciones que hice a partir de mis propias fotos, para mostrar cómo una toma simple puede convertirse en otra cosa.",
   "portada": "01-globo-editado",
   "comparar": {
    "antes": "globo-antes",
@@ -94,7 +94,7 @@ window.PORTAFOLIO = [
  {
   "id": "cuadros-de-generacion",
   "titulo": "Cuadros de generación",
-  "bajada": "Diseño de cuadros de curso y licenciatura: retrato, foto del curso y la lista de cada generación.",
+  "bajada": "Cuadros de curso y de licenciatura, con el retrato de cada alumno, la foto del curso y la lista de la generación.",
   "portada": "cuadros-de-generacion/01-cuarto-medio-atencion-de-parvulos",
   "fotos": [
    {
@@ -134,19 +134,15 @@ window.PORTAFOLIO = [
  {
   "id": "conciertos",
   "titulo": "Conciertos",
-  "bajada": "Música en vivo, luz de escenario.",
-  "portada": "conciertos/18158335582263247",
+  "bajada": "Música en vivo, con la luz del escenario y la energía de la gente.",
+  "portada": "conciertos/17969709565847386",
   "fotos": [
    {
-    "f": "conciertos/18158335582263247",
+    "f": "conciertos/17969709565847386",
     "t": ""
    },
    {
     "f": "conciertos/17943915545431811",
-    "t": ""
-   },
-   {
-    "f": "conciertos/17969709565847386",
     "t": ""
    },
    {
@@ -155,6 +151,10 @@ window.PORTAFOLIO = [
    },
    {
     "f": "conciertos/18012572137439067",
+    "t": ""
+   },
+   {
+    "f": "conciertos/18158335582263247",
     "t": ""
    },
    {
@@ -168,13 +168,101 @@ window.PORTAFOLIO = [
   ]
  },
  {
-  "id": "estrellas-y-luna",
-  "titulo": "Estrellas y luna",
-  "bajada": "Larga exposición, la Vía Láctea y las fases de la luna, lejos de la luz de la ciudad.",
-  "portada": "estrellas-y-luna/18091365019527219",
+  "id": "marchas",
+  "titulo": "Marchas",
+  "bajada": "Fotos de calle en manifestaciones, donde quise registrar a la gente y lo que estaba pasando.",
+  "portada": "marchas/17906233253192085",
   "fotos": [
    {
-    "f": "estrellas-y-luna/18091365019527219",
+    "f": "marchas/17906233253192085",
+    "t": ""
+   },
+   {
+    "f": "marchas/17842331648466766",
+    "t": ""
+   },
+   {
+    "f": "marchas/17844820544386477",
+    "t": ""
+   },
+   {
+    "f": "marchas/17845950425369505",
+    "t": ""
+   },
+   {
+    "f": "marchas/17853717977289856",
+    "t": ""
+   },
+   {
+    "f": "marchas/17854926185265870",
+    "t": ""
+   },
+   {
+    "f": "marchas/17857040435419681",
+    "t": ""
+   },
+   {
+    "f": "marchas/17858918798195186",
+    "t": ""
+   },
+   {
+    "f": "marchas/17862707099162370",
+    "t": ""
+   },
+   {
+    "f": "marchas/17869005005141478",
+    "t": ""
+   },
+   {
+    "f": "marchas/17870037596018019",
+    "t": ""
+   },
+   {
+    "f": "marchas/17897136385626492",
+    "t": ""
+   },
+   {
+    "f": "marchas/17897377747578715",
+    "t": ""
+   },
+   {
+    "f": "marchas/17901695290628261",
+    "t": ""
+   },
+   {
+    "f": "marchas/17940012406404035",
+    "t": ""
+   },
+   {
+    "f": "marchas/18033648193285841",
+    "t": ""
+   },
+   {
+    "f": "marchas/18114386851211737",
+    "t": ""
+   },
+   {
+    "f": "marchas/18133428604112321",
+    "t": ""
+   },
+   {
+    "f": "marchas/18168430750052830",
+    "t": ""
+   },
+   {
+    "f": "marchas/18202150189201997",
+    "t": ""
+   }
+  ]
+ },
+ {
+  "id": "estrellas-y-luna",
+  "titulo": "Estrellas y luna",
+  "bajada": "Fotos de larga exposición, la Vía Láctea y la luna en sus distintas fases, sacadas lejos de las luces de la ciudad.",
+  "portada": "estrellas-y-luna/18105486979207280",
+  "fotos": [
+   {
+    "f": "estrellas-y-luna/18105486979207280",
     "t": ""
    },
    {
@@ -234,7 +322,7 @@ window.PORTAFOLIO = [
     "t": ""
    },
    {
-    "f": "estrellas-y-luna/18105486979207280",
+    "f": "estrellas-y-luna/18091365019527219",
     "t": ""
    },
    {
@@ -258,11 +346,11 @@ window.PORTAFOLIO = [
  {
   "id": "planta-y-agua",
   "titulo": "Planta y agua",
-  "bajada": "Macro: hojas, gotas y lo más pequeño del jardín.",
-  "portada": "planta-y-agua/18361534159178724",
+  "bajada": "Fotos macro de hojas, gotas y todo lo pequeño que hay en el jardín y que casi nadie mira.",
+  "portada": "planta-y-agua/17897907584062530",
   "fotos": [
    {
-    "f": "planta-y-agua/18361534159178724",
+    "f": "planta-y-agua/17897907584062530",
     "t": ""
    },
    {
@@ -286,10 +374,6 @@ window.PORTAFOLIO = [
     "t": ""
    },
    {
-    "f": "planta-y-agua/17897907584062530",
-    "t": ""
-   },
-   {
     "f": "planta-y-agua/17907223363824076",
     "t": ""
    },
@@ -299,6 +383,10 @@ window.PORTAFOLIO = [
    },
    {
     "f": "planta-y-agua/18168754774135040",
+    "t": ""
+   },
+   {
+    "f": "planta-y-agua/18361534159178724",
     "t": ""
    },
    {
@@ -314,7 +402,7 @@ window.PORTAFOLIO = [
  {
   "id": "animales",
   "titulo": "Animales",
-  "bajada": "Aves, insectos y los que se cruzan en el camino.",
+  "bajada": "Aves, insectos y los animales que se me cruzan en el camino.",
   "portada": "animales/17906070361861797",
   "fotos": [
    {
@@ -376,7 +464,7 @@ window.PORTAFOLIO = [
  {
   "id": "ciudad-y-arquitectura",
   "titulo": "Ciudad y arquitectura",
-  "bajada": "Edificios, reflejos, texturas y la calle mirada desde otro ángulo.",
+  "bajada": "Edificios, reflejos, texturas y la calle vista desde otro ángulo.",
   "portada": "ciudad-y-arquitectura/01-esquina-al-cielo",
   "fotos": [
    {
@@ -420,11 +508,11 @@ window.PORTAFOLIO = [
  {
   "id": "naturaleza",
   "titulo": "Naturaleza",
-  "bajada": "Paisajes, árboles y la luz del día.",
-  "portada": "naturaleza/17909546533840902",
+  "bajada": "Paisajes, árboles y la luz que va cambiando durante el día.",
+  "portada": "naturaleza/17958432547819703",
   "fotos": [
    {
-    "f": "naturaleza/17909546533840902",
+    "f": "naturaleza/17958432547819703",
     "t": ""
    },
    {
@@ -437,6 +525,10 @@ window.PORTAFOLIO = [
    },
    {
     "f": "naturaleza/17879495330355462",
+    "t": ""
+   },
+   {
+    "f": "naturaleza/17909546533840902",
     "t": ""
    },
    {
@@ -461,10 +553,6 @@ window.PORTAFOLIO = [
    },
    {
     "f": "naturaleza/17937169426577959",
-    "t": ""
-   },
-   {
-    "f": "naturaleza/17958432547819703",
     "t": ""
    },
    {

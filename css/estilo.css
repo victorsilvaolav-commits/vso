@@ -157,7 +157,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ---- Antes / después ---- */
 .seccion { padding: clamp(80px, 12vw, 140px) 0; }
-.seccion.oscura { background: var(--pizarra-2); }
+.seccion.oscura { background: var(--pizarra); }
 .antes-despues .contenedor { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(40px, 7vw, 100px); align-items: center; }
 .antes-despues .boton { margin-top: 32px; }
 @media (max-width: 860px) { .antes-despues .contenedor { grid-template-columns: 1fr; } }
@@ -197,7 +197,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 @media (max-width: 960px) { .categorias { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .categorias { grid-template-columns: 1fr; } }
 .tarjeta { display: block; }
-.tarjeta .marco { position: relative; aspect-ratio: 4 / 5; --visor-inset: 14px; --visor-l: 22px; }
+.tarjeta .marco { position: relative; aspect-ratio: 1; --visor-inset: 14px; --visor-l: 22px; }
 .tarjeta .marco::after { opacity: 0; --visor-inset: 34px; }
 .tarjeta:hover .marco::after, .tarjeta:focus-visible .marco::after { opacity: 1; inset: 14px; }
 .tarjeta .marco img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.92); transition: transform .8s cubic-bezier(.2, .8, .2, 1), filter .4s; }
@@ -304,10 +304,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
    ========================================================= */
 .mano { font-family: var(--mano); font-weight: 500; line-height: 1.1; }
 
-/* Olas entre secciones: el color de la sección anterior "cae" con borde curvo */
+/* Entre secciones: cortes rectos, sin olas (identidad de líneas rectas del logo) */
 .seccion, .mirada { position: relative; }
-.ola { position: absolute; top: -1px; left: 0; width: 100%; height: clamp(36px, 6vw, 90px); fill: var(--color); pointer-events: none; z-index: 3; }
-.seccion > .ola + .contenedor { position: relative; }
 
 /* Subrayado hecho a mano bajo una palabra del título */
 .subrayar { position: relative; display: inline-block; white-space: nowrap; }
@@ -326,69 +324,13 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .nota-elige .flecha-mano.abajo { width: 40px; height: 48px; margin-left: 4px; }
 .nota-hablemos { margin: -8px 0 22px; font-size: clamp(30px, 3.4vw, 40px); color: var(--rojo); transform: rotate(-5deg); }
 
-/* ---- MI MIRADA: escena fija mientras se baja ---- */
-.mirada { background: var(--pizarra); height: 100svh; }
-.mirada .escena { position: sticky; top: 0; height: 100svh; min-height: 520px; overflow: hidden; }
-.mirada.quieta { height: auto; }
-.mirada.quieta .escena { position: relative; }
-.mirada-titulo { position: absolute; left: var(--margen); right: var(--margen); top: clamp(76px, 12svh, 128px); text-align: center; z-index: 2; }
-.mirada-titulo .mano { margin: 0; font-size: clamp(28px, 3.2vw, 40px); color: var(--rojo); transform: rotate(-3deg); }
-.mirada-titulo .titulo-seccion { margin-top: 2px; font-size: clamp(30px, 4.4vw, 54px); }
-.mesa { position: absolute; z-index: 3; left: 50%; bottom: clamp(58px, 10svh, 104px); width: min(1040px, 92vw, 112svh); aspect-ratio: 100 / 46; transform: translateX(-50%); }
-.pieza { position: absolute; display: block; visibility: hidden; will-change: left, top, width, height, transform; --sombra: 0; }
-.pieza .foto {
-  position: absolute; inset: 0; overflow: hidden; background: var(--pizarra-3);
-  box-shadow: 0 calc(10px + 30px * var(--sombra)) calc(26px + 60px * var(--sombra)) rgba(0, 0, 0, calc(.35 + .3 * var(--sombra)));
-}
-.pieza img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
-.pieza.puesta:hover img, .pieza.puesta:focus-visible img { transform: scale(1.08); }
-.pieza:focus-visible { outline: none; }
-.pieza:focus-visible .foto { outline: 2px solid var(--rojo); outline-offset: 4px; }
-.pieza .nota {
-  position: absolute; left: 50%; white-space: nowrap; font-family: var(--mano); font-size: clamp(17px, 1.9vw, 26px); color: var(--hueso);
-  opacity: 0; transform: translate(-50%, 6px) rotate(-3deg); transition: opacity .5s, transform .5s, color .2s; pointer-events: none;
-}
-.pieza.fila-1 .nota { bottom: calc(100% + 2px); }
-.pieza.fila-2 .nota { top: calc(100% + 4px); }
-.pieza.puesta .nota { opacity: .85; transform: translate(-50%, 0) rotate(-3deg); }
-.pieza.puesta:hover .nota { color: var(--rojo); opacity: 1; }
-.mirada .pista {
-  position: absolute; left: 0; right: 0; bottom: clamp(14px, 3svh, 30px); margin: 0; text-align: center;
-  font-size: clamp(20px, 2vw, 26px); color: var(--gris); opacity: 0; transition: opacity .6s;
-}
-.escena.completa .pista { opacity: 1; }
-@media (max-width: 700px) {
-  .mesa { width: 96vw; bottom: auto; top: 46%; }
-  .pieza .nota { font-size: 15px; }
-}
-
-/* ---- Tarjetas de categoría en arco, con un ritmo desordenado ---- */
-.tarjeta .marco .recorte { border-radius: 50% 50% 14px 14px / 36% 36% 14px 14px; }
-.tarjeta .marco::after { display: none; }
-.tarjeta .info { justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
-.tarjeta .cuenta { font-family: var(--mano); font-size: 22px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--rojo); }
-@media (min-width: 961px) {
-  .categorias { row-gap: clamp(40px, 5vw, 72px); }
-  .categorias > :nth-child(3n + 2) { transform: translateY(64px); }
-  .categorias > :nth-child(3n + 2).aparece:not(.visto) { transform: translateY(88px); }
-  #portafolio { padding-bottom: calc(clamp(80px, 12vw, 140px) + 64px); }
-}
-
-/* ---- Sobre mí: retrato en arco ---- */
-.retrato { margin: 44px 0 0; display: flex; align-items: flex-end; gap: 18px; }
-.retrato .arco { display: block; width: min(260px, 52vw); aspect-ratio: 4 / 5; overflow: hidden; border-radius: 999px 999px 18px 18px; flex: none; }
-.retrato img { width: 100%; height: 100%; object-fit: cover; }
-.retrato figcaption { font-size: clamp(24px, 2.4vw, 30px); color: var(--rojo); transform: rotate(-6deg); margin-bottom: 24px; }
-
 .contacto .datos-contacto { margin: 28px 0 0; font-size: 14px; color: var(--gris); letter-spacing: .04em; overflow-wrap: anywhere; }
 
 /* =========================================================
    CUADROS DE GENERACIÓN (sección clara con cuadro 3D)
    ========================================================= */
-.cuadros { background: var(--hueso); color: var(--pizarra); overflow: hidden; }
-.cuadros .etiqueta, .cuadros .texto-suave { color: var(--gris-osc); }
-.cuadros .boton { border-color: var(--pizarra); margin-top: 32px; }
-.cuadros .boton:hover { background: var(--pizarra); color: var(--hueso); }
+.cuadros { overflow: hidden; }
+.cuadros .boton { margin-top: 32px; }
 .cuadros-grid { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: clamp(40px, 7vw, 100px); align-items: center; }
 @media (max-width: 860px) { .cuadros-grid { grid-template-columns: 1fr; } }
 
@@ -423,3 +365,86 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .tiempo b { display: block; margin: 16px 0 4px; font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--pizarra); }
 @media (max-width: 860px) { .tiempo { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tiempo::before { display: none; } }
 @media (max-width: 460px) { .tiempo { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   RITMO DE COLOR DE LA PORTADA (13-nov)
+   blanco (intro) · negro (mirada) · blanco (cuadros) · ROJO (antes/después) · negro (portafolio) · blanco (sobre mí) · negro (contacto)
+   Un solo negro (--pizarra) y un solo blanco (--hueso); el rojo es el del encuadre del logo.
+   ========================================================= */
+.seccion.clara { background: var(--hueso); color: var(--pizarra); }
+.clara .etiqueta, .clara .texto-suave { color: var(--gris-osc); }
+.clara .boton { border-color: var(--pizarra); }
+.clara .boton:hover { background: var(--pizarra); color: var(--hueso); }
+
+.seccion.roja { background: var(--rojo); color: var(--hueso); }
+.roja .etiqueta { color: var(--hueso); }
+.roja .etiqueta::before { background: var(--pizarra); }
+.roja .texto-suave { color: var(--hueso); opacity: .92; }
+.roja .subrayar path { stroke: var(--hueso); }
+.roja .boton { border-color: var(--pizarra); background: var(--pizarra); color: var(--hueso); }
+.roja .boton:hover { background: var(--hueso); border-color: var(--hueso); color: var(--pizarra); }
+.roja .nota-comparar { color: var(--pizarra); }
+/* lo que contrasta al medio: el comparador con marco negro y esquinas de visor blancas */
+.roja .comparador { --visor-inset: -14px; }
+.roja .comparador::after { --c: var(--hueso); }
+.roja .comparador .divisor { background: var(--hueso); }
+
+.sobre p { color: var(--gris-osc); }
+.sobre p strong { color: var(--pizarra); }
+.sobre .datos { border-top-color: rgba(26, 33, 41, .16); }
+.sobre .datos b { color: var(--pizarra); }
+.sobre .datos span { color: var(--gris-osc); }
+
+.pie { background: var(--pizarra); }
+
+/* ---- MI MIRADA: 8 fotos cuadradas y quietas ---- */
+.mirada { background: var(--pizarra); padding: clamp(80px, 12vw, 140px) 0; }
+.mirada .escena { width: min(var(--ancho), 100% - 2 * var(--margen)); margin-inline: auto; }
+.mirada-titulo { text-align: center; margin-bottom: clamp(36px, 5vw, 60px); }
+.mirada-titulo .mano { margin: 0; font-size: clamp(28px, 3.2vw, 40px); color: var(--rojo); transform: rotate(-3deg); }
+.mirada-titulo .titulo-seccion { margin-top: 2px; font-size: clamp(30px, 4.4vw, 54px); }
+.mesa { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
+@media (max-width: 700px) { .mesa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pieza { display: block; position: relative; }
+.pieza .foto { display: block; aspect-ratio: 1; overflow: hidden; background: var(--pizarra-3); }
+.pieza img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+.pieza:hover img, .pieza:focus-visible img { transform: scale(1.06); }
+.pieza:focus-visible { outline: none; }
+.pieza:focus-visible .foto { outline: 2px solid var(--rojo); outline-offset: 4px; }
+/* nombre de la sección escrito a mano bajo cada foto (como antes) */
+.pieza .nota { display: block; margin-top: 8px; text-align: center; font-family: var(--mano); font-size: clamp(19px, 1.9vw, 26px); line-height: 1.1; color: var(--hueso); opacity: .85; transform: rotate(-3deg); transition: color .2s, opacity .2s; }
+.pieza:hover .nota { color: var(--rojo); opacity: 1; }
+.mirada .pista { margin: clamp(28px, 4vw, 44px) 0 0; font-family: var(--mano); text-align: center; font-size: clamp(20px, 2vw, 26px); color: var(--gris); }
+
+/* ---- Tarjetas del portafolio: cuadradas, con la cuenta en rojo a mano y el ritmo desordenado de antes ---- */
+.tarjeta .marco::after { display: none; }
+.tarjeta .info { justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
+.tarjeta .cuenta { font-family: var(--mano); font-size: 22px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--rojo); }
+/* ---- Sobre mí: foto cuadrada, más grande (sin la nota de al lado) ---- */
+.retrato { margin: 44px 0 0; }
+.retrato .arco { display: block; position: relative; width: min(400px, 100%); aspect-ratio: 1; overflow: hidden; }
+.retrato img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- Rayita roja arriba a la izquierda (como antes en la mirada): mirada, portafolio y foto de Sobre mí ---- */
+.pieza::before, .tarjeta .marco::before, .retrato .arco::before {
+  content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 3px; background: var(--rojo); z-index: 2;
+}
+.tarjeta .marco::before { width: 32px; height: 4px; }
+.retrato .arco::before { width: 40px; height: 5px; }
+
+/* ---- Portafolio: tarjetas más grandes (grilla más ancha y menos espacio entre ellas) ---- */
+#portafolio .contenedor { width: min(1400px, 100% - 2 * var(--margen)); }
+.categorias { gap: clamp(16px, 2vw, 28px); row-gap: clamp(32px, 4vw, 52px); }
+
+/* ---- Sobre mí: algo de rojo; la línea sobre Fotografía / Diseño / Edición en rojo y más gruesa ---- */
+.sobre .datos { border-top: 3px solid var(--rojo); }
+
+/* ---- Línea de tiempo dentro de la página de Cuadros de generación (fondo oscuro) ---- */
+.cat-tiempo { margin: 0 0 clamp(72px, 10vw, 120px); }
+.cat-tiempo .titulo-seccion { font-size: clamp(30px, 4.4vw, 50px); margin: 0 0 36px; }
+.cat-tiempo .tiempo::before { background: var(--linea); }
+.cat-tiempo .tiempo li::before { background: var(--pizarra); border-color: var(--gris); }
+.cat-tiempo .tiempo li.actual::before { background: var(--rojo); border-color: var(--rojo); }
+.cat-tiempo .tiempo img { background: var(--pizarra-3); }
+.cat-tiempo .tiempo figcaption { color: var(--gris); }
+.cat-tiempo .tiempo b { color: var(--hueso); }

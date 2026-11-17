@@ -154,17 +154,32 @@
 
   function terminar() {
     cancelAnimationFrame(raf);
+    clearTimeout(esperaTamano); esperaTamano = null;
     terminado = true;
     rotulo.classList.remove('visible');
     intro.classList.add('final');
     canvas.style.transition = 'opacity .5s'; canvas.style.opacity = 0;
   }
 
+  // ¿Ya tienen tamaño el lienzo y el logo? (abierta en segundo plano o dentro de algo oculto pueden medir 0)
+  const tieneTamano = () => {
+    const r = canvas.getBoundingClientRect(), s = svg.getBoundingClientRect();
+    return r.width >= 1 && r.height >= 1 && s.width >= 1;
+  };
+  let esperaTamano = null;
+
   function iniciar() {
+    cancelAnimationFrame(raf);
+    clearTimeout(esperaTamano); esperaTamano = null;
+    if (!tieneTamano()) {                      // espera a tener tamaño en vez de romperse
+      terminado = false;
+      esperaTamano = setTimeout(() => { esperaTamano = null; if (!terminado) iniciar(); }, 200);
+      return;
+    }
     terminado = false; faseActual = -1; puntos = [];
     intro.classList.remove('final');
     canvas.style.transition = 'none'; canvas.style.opacity = 1;
-    preparar();
+    try { preparar(); } catch (e) { return terminar(); }   // si algo falla, se muestra el logo final igual
     t0 = performance.now();
     raf = requestAnimationFrame(cuadro);
   }
@@ -174,7 +189,12 @@
   let espera;
   addEventListener('resize', () => {
     clearTimeout(espera);
-    espera = setTimeout(() => { if (!terminado) { const t = performance.now() - t0; preparar(); faseActual = -1; t0 = performance.now() - t; } }, 150);
+    espera = setTimeout(() => {
+      if (terminado || esperaTamano || !tieneTamano()) return;
+      const t = performance.now() - t0;
+      try { preparar(); } catch (e) { return terminar(); }
+      faseActual = -1; t0 = performance.now() - t;
+    }, 150);
   });
 
   // Para revisar una figura quieta desde la consola: introVer('diafragma')

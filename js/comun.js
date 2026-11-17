@@ -49,10 +49,26 @@
       perilla.setAttribute('aria-valuenow', Math.round(100 - p));
     };
     const desdeX = (x) => { const r = el.getBoundingClientRect(); poner((x - r.left) / r.width * 100); };
-    el.addEventListener('pointerdown', (e) => { arrastrando = true; manual = true; el.setPointerCapture(e.pointerId); desdeX(e.clientX); });
-    el.addEventListener('pointermove', (e) => { if (arrastrando) desdeX(e.clientX); });
-    const soltar = () => { arrastrando = false; quieto = performance.now(); };
-    el.addEventListener('pointerup', soltar); el.addEventListener('pointercancel', soltar);
+    // Con mouse se arrastra de inmediato. Con el dedo se espera a ver hacia dónde va:
+    // si se mueve de lado arrastra la línea; si se mueve hacia arriba o abajo es scroll y no se toca nada.
+    let toque = null;
+    const empezar = (e) => { arrastrando = true; manual = true; toque = null; try { el.setPointerCapture(e.pointerId); } catch (_) {} desdeX(e.clientX); };
+    el.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch') toque = { x: e.clientX, y: e.clientY };
+      else empezar(e);
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (arrastrando) return desdeX(e.clientX);
+      if (!toque) return;
+      const dx = Math.abs(e.clientX - toque.x), dy = Math.abs(e.clientY - toque.y);
+      if (dx > 8 && dx > dy) empezar(e);
+      else if (dy > 8) toque = null;
+    });
+    el.addEventListener('pointerup', (e) => {
+      if (toque) { manual = true; desdeX(e.clientX); }   // un toque corto también mueve la línea
+      toque = null; arrastrando = false; quieto = performance.now();
+    });
+    el.addEventListener('pointercancel', () => { toque = null; arrastrando = false; quieto = performance.now(); });
     perilla.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); manual = true; quieto = performance.now(); poner(p + (e.key === 'ArrowLeft' ? -5 : 5)); }
     });
@@ -102,7 +118,9 @@
   /* ---------- Tarjetas de categoría (portada) ---------- */
   const lista = document.querySelector('.categorias');
   if (lista) {
-    lista.innerHTML = P.map(c => c.fotos.length ? `
+    // Matrimonios y Cuadros de generación no van en esta grilla (siguen en el menú y tienen su página)
+    const FUERA = ['matrimonios', 'cuadros-de-generacion'];
+    lista.innerHTML = P.filter(c => !FUERA.includes(c.id)).map(c => c.fotos.length ? `
       <a class="tarjeta aparece" href="categoria.html?c=${c.id}">
         <div class="marco visor"><div class="recorte"><img src="${foto(c.portada || c.fotos[0].f)}" alt="" loading="lazy"></div></div>
         <div class="info"><h3>${c.titulo}</h3><span class="cuenta">${c.fotos.length} ${c.fotos.length === 1 ? 'foto' : 'fotos'}</span></div>
@@ -138,9 +156,20 @@
         <div>
           <span class="etiqueta">Antes y después</span>
           <h2 class="titulo-seccion">${c.comparar.titulo}</h2>
-          <p class="texto-suave">Arrastra la línea para comparar la foto original con el fotomontaje terminado.</p>
+          <p class="texto-suave">Mueve la línea para ver la foto original y cómo quedó después del fotomontaje.</p>
         </div>
         <div data-comp></div>
+      </div>`;
+    // Cuadros de generación: la historia de mis cuadros, de 1998 a hoy, antes de la galería
+    if (c.id === 'cuadros-de-generacion') html += `
+      <div class="linea-tiempo cat-tiempo aparece">
+        <h2 class="titulo-seccion">De mi cuadro de kínder a mis diseños</h2>
+        <ol class="tiempo">
+        <li><figure><img src="img/cuadros/1998.jpg" alt="Mi cuadro de kínder de 1998 en la Escuela España, con marco burdeo" width="1100" height="812" loading="lazy"><figcaption><b>1998</b>Este es mi cuadro de kínder en la Escuela España: dos fotos de 13 × 18 pegadas en cartulina y un marco burdeo. Crecí rodeado de cuadros como este.</figcaption></figure></li>
+        <li><figure><img src="img/cuadros/2005.jpg" alt="Mi primer diseño: mosaico de nivel medio mayor del Centro Verbum, con retratos en óvalo" width="1100" height="815" loading="lazy"><figcaption><b>2005</b>Mi primer diseño, un mosaico con cada niño recortado en óvalo y su nombre abajo. Le faltan detalles, pero aquí empezó todo.</figcaption></figure></li>
+        <li><figure><img src="img/cuadros/2025.jpg" alt="Cuadro de octavo básico de 2025" width="825" height="1100" loading="lazy"><figcaption><b>2025</b>Aquí el retrato ya ocupa toda la imagen y la lista del curso va encima, en letra blanca con sombra.</figcaption></figure></li>
+        <li class="actual"><figure><img src="img/cuadros/3d/impresion-1.jpg" alt="Cuadro de cuarto medio de 2026" width="1000" height="1600" loading="lazy"><figcaption><b>2026</b>Mi diseño de ahora: azul noche, un filete dorado y letra serif, con el retrato, las fotos del curso y la lista ordenados en una grilla.</figcaption></figure></li>
+      </ol>
       </div>`;
     const figura = (f, k) => `
           <figure class="aparece"><button class="visor" data-k="${k}" aria-label="Ver foto ${k + 1} en grande"><img src="${foto(f.f)}" alt="${f.t || c.titulo + ' ' + (k + 1)}" loading="lazy"></button>${f.t ? `<figcaption>${f.t}</figcaption>` : ''}</figure>`;
