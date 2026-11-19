@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajustar fotos · Víctor Silva</title>
+  <meta name="description" content="Ajusta tus fotos gratis con el mismo ajuste que uso en las fotos que imprimo: balance de blancos, luz en las caras, color y enfoque. Todo pasa en tu computador, sin instalar nada y sin subir tus fotos.">
+  <meta name="theme-color" content="#1A2129">
+  <link rel="icon" href="img/vso-oficial-simbolo-oscuro.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="css/estilo.css?v=7">
+  <link rel="stylesheet" href="css/ajustar.css?v=1">
+</head>
+<body data-pagina="ajustar">
+
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html" aria-label="Víctor Silva, inicio"><img src="img/vso-simbolo.svg" alt=""><span>Víctor Silva</span></a>
+      <button class="boton-menu" aria-label="Abrir menú" aria-expanded="false"><span></span></button>
+      <nav class="menu" aria-label="Principal">
+        <div class="desplegar">
+          <button aria-expanded="false" aria-haspopup="true">Portafolio <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+          <div class="submenu"></div>
+        </div>
+        <a href="index.html#cuadros">Cuadros</a>
+        <a href="ajustar.html" aria-current="page">Ajustar fotos</a>
+        <a href="index.html#sobre-mi">Sobre mí</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="ajuste">
+      <div class="contenedor">
+        <div class="ajuste-cabeza">
+          <span class="etiqueta">Herramienta gratis</span>
+          <h1>Ajusta tus fotos</h1>
+          <p>El mismo ajuste que uso en las fotos que imprimo en los actos: corrige el balance de blancos, la luz de las caras, el color y el enfoque, sin que se vean retocadas.</p>
+          <p class="mano nota-privada">sin instalar nada, y tus fotos no salen de tu computador</p>
+        </div>
+
+        <div class="zona visor" tabindex="-1">
+          <input type="file" id="elegir" multiple accept=".jpg,.jpeg,.png,.tif,.tiff,image/jpeg,image/png,image/tiff">
+          <svg class="icono" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M24 31V9M15 18l9-9 9 9"/><path d="M8 29v8a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3v-8"/></svg>
+          <b>Arrastra tus fotos aquí</b>
+          <span>o elígelas desde tu computador · JPG, PNG o TIFF</span>
+          <button type="button" class="boton" data-elegir>Elegir fotos</button>
+        </div>
+
+        <fieldset class="opciones">
+          <legend>Tamaño de las fotos ajustadas</legend>
+          <label><input type="radio" name="tam" value="0" checked><span><b>Tamaño original</b><small>la mejor calidad, tarda más</small></span></label>
+          <label><input type="radio" name="tam" value="12"><span><b>Rápido</b><small>hasta 12 MP, sobra para imprimir en 15 × 20</small></span></label>
+        </fieldset>
+
+        <div class="motor" hidden>
+          <div class="motor-barra"><i></i></div>
+          <span class="motor-texto" role="status"></span>
+        </div>
+
+        <div class="acciones" hidden>
+          <p class="resumen" aria-live="polite"></p>
+          <div class="botones">
+            <button type="button" class="boton chico" data-detener hidden>Detener</button>
+            <button type="button" class="boton chico" data-seguir hidden>Ajustar las que faltan</button>
+            <button type="button" class="boton chico lleno" data-zip disabled>Descargar todas</button>
+            <button type="button" class="boton chico" data-limpiar>Empezar de nuevo</button>
+          </div>
+        </div>
+
+        <div class="panel-comparar" hidden>
+          <div class="panel-cabeza">
+            <b class="panel-nombre"></b>
+            <div>
+              <a class="boton chico lleno" data-bajar download>Descargar</a>
+              <button type="button" class="boton chico" data-cerrar>Cerrar</button>
+            </div>
+          </div>
+          <div class="comparador visor" aria-label="Comparación antes y después">
+            <img class="antes" alt="Foto original" draggable="false">
+            <img class="despues" alt="Foto ajustada" draggable="false">
+            <span class="rotulo-img r-antes">Original</span><span class="rotulo-img r-despues">Ajustada</span>
+            <span class="divisor"></span>
+            <span class="perilla" role="slider" tabindex="0" aria-label="Deslizar para comparar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+          <p class="panel-info"></p>
+        </div>
+
+        <ul class="lista-fotos" aria-label="Fotos"></ul>
+      </div>
+    </section>
+
+    <section class="seccion clara que-hace">
+      <div class="contenedor">
+        <div class="que-hace-grid">
+          <div>
+            <span class="etiqueta">Qué hace</span>
+            <h2 class="titulo-seccion">Un ajuste pensado para personas</h2>
+            <p class="texto-suave">Lo fui afinando con fotos reales de licenciaturas, primeras comuniones y actos de colegio, y con pruebas a ciegas para elegir entre versiones. Cada foto se mide por separado: lo que necesita una no se le aplica a otra.</p>
+          </div>
+          <ol class="pasos">
+            <li><b>Balance de blancos</b>Toma como referencia la ropa clara (camisas, albas, blusas). Las fotos seguidas con la misma luz quedan parejas.</li>
+            <li><b>Luz en las caras</b>Si las caras quedaron oscuras, las aclara; si están bien, no las toca. El negro sigue negro y el blanco no se quema.</li>
+            <li><b>Contraste suave</b>Da volumen sin efecto HDR ni aureolas alrededor del pelo.</li>
+            <li><b>Color natural</b>Sube los colores apagados y calma los muy intensos. La piel se protege para que no se vea rojiza.</li>
+            <li><b>Enfoque</b>Realza los bordes y los ojos sin realzar el grano ni marcar manchas en la piel.</li>
+            <li><b>Grano</b>Si la foto es de interior o de noche y tiene grano, lo reduce; si está limpia, no hace nada.</li>
+          </ol>
+        </div>
+
+        <div class="preguntas">
+          <h3>Preguntas</h3>
+          <details>
+            <summary>¿Se suben mis fotos a internet?</summary>
+            <p>No. El ajuste corre dentro de tu navegador: la página descarga el programa y tus fotos se ajustan en tu propio computador. Nadie más las ve.</p>
+          </details>
+          <details>
+            <summary>¿Por qué tarda en empezar la primera vez?</summary>
+            <p>Porque descarga el programa de ajuste (unos 20 MB). Se descarga una sola vez: después queda guardado en tu navegador y parte en unos segundos.</p>
+          </details>
+          <details>
+            <summary>¿Cuánto demora cada foto?</summary>
+            <p>Depende de tu computador y del tamaño de la foto. En el mío, una foto de 12 megapíxeles tarda unos 30 segundos y una de 24, algo más de un minuto; en modo rápido ninguna tarda más que una de 12. Mientras se ajustan, puedes seguir usando tu computador.</p>
+          </details>
+          <details>
+            <summary>¿Las fotos pierden calidad?</summary>
+            <p>Salen en JPG de alta calidad, del mismo tamaño que la original y con los datos de la cámara. Tus originales no se tocan.</p>
+          </details>
+          <details>
+            <summary>¿Funciona en el celular?</summary>
+            <p>Funciona mejor en un computador. En el celular, las fotos grandes pueden necesitar más memoria de la que tiene el navegador: si falla, prueba con el modo rápido.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor"><span>© <span data-anio>2026</span> Víctor Silva · Diseño · Fotografía</span><a href="index.html">Volver al inicio</a></div>
+  </footer>
+
+  <script src="js/datos.js"></script>
+  <script src="js/comun.js?v=6"></script>
+  <script src="js/ajustar.js?v=1"></script>
+</body>
+</html>
