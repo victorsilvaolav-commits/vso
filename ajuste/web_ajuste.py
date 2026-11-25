@@ -1,14 +1,18 @@
 """Puente entre la página "Ajustar fotos" (Python dentro del navegador, con Pyodide) y
 ajuste_combinado.py, que se usa TAL CUAL, sin cambiarle nada: las fotos salen igual que en el PC.
 
-Para poner en la página una versión nueva del ajuste basta con copiar el ajuste_combinado.py nuevo
-en esta carpeta (vso/ajuste/) y subirlo. Este archivo no hace falta tocarlo.
+Para poner en la página una versión nueva del ajuste: copiar a esta carpeta (vso/ajuste/) los
+archivos del programa que usa el ajuste (desde VSO App 1.4, 25-11-2026: ajuste_combinado.py,
+estilo_lightroom.py y .npz, enfoque_vso.py, retoque_vso.py y los modelos .onnx/.tflite; la lista
+está en js/ajustar-motor.js) y subirlos. El motor nativo (vso_motor_nativo.py y sus DLL) NO va:
+son de Windows; sin él el ajuste usa su camino de respaldo, que da la misma foto.
 
 Lo único distinto del PC: en el navegador no hay hilos ni procesos, así que lo que el script hace
 "a la vez" (las franjas de cada foto y la medición de la serie) se hace de a uno. El resultado es
 el mismo (el script ya dice que las franjas dan lo mismo hechas de una vez), solo que más lento.
 """
 import argparse
+import concurrent.futures
 import json
 import shutil
 from concurrent.futures import Future
@@ -48,6 +52,9 @@ class _DeAUno:
 
 ac.ThreadPoolExecutor = _DeAUno
 ac._franjas = _DeAUno()
+# estilo_lightroom.py y enfoque_vso.py (VSO 1.4) importan ThreadPoolExecutor adentro de sus funciones:
+# se reemplaza también en concurrent.futures para que lo tomen de a uno.
+concurrent.futures.ThreadPoolExecutor = _DeAUno
 
 
 def _ajustes_por_defecto():
@@ -70,7 +77,12 @@ def _ajustes_por_defecto():
         pass
     finally:
         argparse.ArgumentParser.parse_args = original
-    return leidos["args"]
+    args = leidos["args"]
+    # Lo que main() completa justo después de leer las opciones (VSO 1.4): el ajuste es siempre el
+    # estilo Lightroom y en la web no se elige ninguna foto para "Enfocar" (eso es del modo Pro).
+    args.estilo = "lightroom"
+    args.enfocar_claves = {}
+    return args
 
 
 ARGS = _ajustes_por_defecto()
@@ -100,7 +112,8 @@ def planear(claves_json):
     claves = json.loads(claves_json)
     fotos = [(_foto(c), ENTRADA / c / ARGS.salida) for c in claves]
     plan = [None] * len(fotos)
-    if ARGS.serie != "no" and len(fotos) >= ac.SERIE_MINIMO:
+    # Igual que main(): con el estilo Lightroom (VSO 1.4) no hay balance por serie
+    if ARGS.serie != "no" and len(fotos) >= ac.SERIE_MINIMO and ARGS.estilo != "lightroom":
         try:
             plan = ac.plan_serie(fotos, 1, 0.88 * ARGS.fuerza, 0.6 * ARGS.fuerza * ARGS.contraste)
         except Exception:
@@ -145,7 +158,8 @@ def ajustar(clave):
     """Ajusta una foto con procesar_foto del script (el mismo JPG calidad 95, EXIF y perfil de
     color que en el PC). Devuelve JSON: estado ("lista", "ya" o "error"), ruta, segundos, info."""
     f = _foto(clave)
-    _, destino, segundos, info = ac.procesar_foto((f, ENTRADA / clave / ARGS.salida, ARGS, _planes.pop(clave, None)))
+    # Devuelve 4 valores, o 5 cuando la foto se ajustó (VSO 1.3+: el quinto es la revisión de Pro)
+    _, destino, segundos, info = ac.procesar_foto((f, ENTRADA / clave / ARGS.salida, ARGS, _planes.pop(clave, None)))[:4]
     if destino is None:
         estado, ruta = "ya", ""
     elif destino == "error":

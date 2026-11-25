@@ -6,7 +6,10 @@
 import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v314.0.8/full/pyodide.mjs';
 
 const PYODIDE = 'https://cdn.jsdelivr.net/pyodide/v314.0.8/full/';
-const ARCHIVOS = ['ajuste_combinado.py', 'web_ajuste.py', 'face_detection_yunet_2023mar.onnx'];
+// VSO App 1.4 (25-11-2026): el estilo Lightroom y sus ayudantes, mas el modelo de puntos de la cara
+const ARCHIVOS = ['ajuste_combinado.py', 'web_ajuste.py', 'face_detection_yunet_2023mar.onnx',
+  'estilo_lightroom.py', 'estilo_lightroom.npz', 'enfoque_vso.py', 'retoque_vso.py',
+  'face_landmarks_detector.tflite'];
 
 let py = null, web = null, trabajando = false;
 const cola = [];
