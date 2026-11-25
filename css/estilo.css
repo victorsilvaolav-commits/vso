@@ -448,3 +448,88 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .cat-tiempo .tiempo img { background: var(--pizarra-3); }
 .cat-tiempo .tiempo figcaption { color: var(--gris); }
 .cat-tiempo .tiempo b { color: var(--hueso); }
+
+/* ---- VSO App: llamado entre "Ocho fotos, una mirada" y Cuadros de generación ---- */
+.app-cta { background: var(--pizarra); padding: 0 0 clamp(80px, 12vw, 140px); }
+.app-caja {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: clamp(32px, 5vw, 72px); align-items: center;
+  padding: clamp(28px, 5vw, 64px); background: var(--pizarra-3); border-radius: 28px; border-top: 4px solid var(--rojo);
+}
+@media (max-width: 860px) { .app-caja { grid-template-columns: 1fr; } }
+.app-pregunta { margin: 18px 0 0; font-size: clamp(26px, 3vw, 36px); color: var(--rojo); transform: rotate(-3deg); transform-origin: left; }
+.app-caja .titulo-seccion { margin-top: 6px; font-size: clamp(32px, 4.6vw, 54px); }
+.app-caja .texto-suave { margin: 20px 0 0; }
+.app-caja .boton { margin-top: 30px; background: var(--rojo); border-color: var(--rojo); }
+.app-caja .boton:hover { background: var(--hueso); border-color: var(--hueso); color: var(--pizarra); }
+.app-muestra { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.6vw, 18px); align-items: end; }
+.app-muestra figure { margin: 0; }
+.app-muestra span { display: block; position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px; }
+.app-muestra img { width: 100%; height: 100%; object-fit: cover; }
+.app-muestra .oscura img { filter: brightness(.3) saturate(.75); }
+.app-muestra .blanca img { filter: brightness(1.75) contrast(.62) saturate(.7); }
+.app-muestra .bien span { outline: 3px solid var(--rojo); outline-offset: 4px; }
+.app-muestra .bien span::before { content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 3px; background: var(--rojo); z-index: 2; }
+.app-muestra figcaption { margin-top: 10px; text-align: center; font-family: var(--mano); font-size: clamp(19px, 1.9vw, 24px); line-height: 1.1; color: var(--gris); transform: rotate(-3deg); }
+.app-muestra .bien figcaption { color: var(--rojo); font-weight: 700; }
+
+/* ---- Fotos destacadas: carrusel que se desliza de lado (reemplaza las tarjetas de categoría en la portada) ---- */
+.carrusel { position: relative; }
+.riel {
+  display: flex; gap: clamp(12px, 1.8vw, 22px); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none; padding: 4px 0 6px; cursor: grab; outline: none;
+}
+.riel::-webkit-scrollbar { display: none; }
+.riel.arrastrando { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+.riel:focus-visible { outline: 2px solid var(--rojo); outline-offset: 6px; }
+.destacada { flex: 0 0 clamp(190px, 21vw, 270px); scroll-snap-align: start; position: relative; display: block; padding: 0; text-align: center; }
+.destacada .foto { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--pizarra-3); }
+.destacada img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .8, .2, 1); user-select: none; -webkit-user-drag: none; }
+.destacada:hover img, .destacada:focus-visible img { transform: scale(1.05); }
+.destacada:focus-visible { outline: none; }
+.destacada:focus-visible .foto { outline: 2px solid var(--rojo); outline-offset: 4px; }
+.destacada::before { content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 3px; background: var(--rojo); z-index: 2; }
+.destacada .nota { display: block; margin-top: 8px; font-family: var(--mano); font-size: clamp(19px, 1.9vw, 24px); line-height: 1.1; color: var(--hueso); opacity: .85; transform: rotate(-3deg); transition: color .2s, opacity .2s; }
+.destacada:hover .nota { color: var(--rojo); opacity: 1; }
+.carrusel-flechas { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; }
+.carrusel-flecha { width: 52px; height: 52px; border: 1px solid var(--hueso); border-radius: 50%; display: grid; place-items: center; transition: .25s; }
+.carrusel-flecha svg { width: 22px; }
+.carrusel-flecha:hover { background: var(--hueso); color: var(--pizarra); }
+.carrusel-flecha:disabled { opacity: .3; pointer-events: none; }
+.nota-elige .flecha-mano { width: 70px; height: 36px; color: var(--rojo); }
+
+/* ---- Estrellas y luna: una foto dividida en 4 para verla de cerca ---- */
+.de-cerca { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; margin-bottom: clamp(64px, 9vw, 110px); }
+@media (max-width: 860px) { .de-cerca { grid-template-columns: 1fr; } }
+.de-cerca .titulo-seccion { font-size: clamp(30px, 4.4vw, 50px); }
+.de-cerca .texto-suave { margin: 18px 0 0; }
+.de-cerca .nota-cerca { margin: 16px 0 0; font-size: clamp(24px, 2.6vw, 30px); color: var(--rojo); transform: rotate(-3deg); transform-origin: left; }
+.cuartos { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(4px, .7vw, 8px); }
+.cuartos button { position: relative; display: block; padding: 0; overflow: hidden; aspect-ratio: 1000 / 666; background: var(--pizarra-3); }
+.cuartos img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2, .8, .2, 1), filter .3s; }
+.cuartos button:hover img, .cuartos button:focus-visible img { transform: scale(1.06); filter: brightness(1.12); }
+.cuartos button:focus-visible { outline: 2px solid var(--rojo); outline-offset: 3px; }
+.cuartos .n { position: absolute; left: 12px; bottom: 6px; font-family: var(--mano); font-size: clamp(22px, 2.4vw, 30px); line-height: 1; color: var(--hueso); text-shadow: 0 1px 6px rgba(0, 0, 0, .7); transition: color .2s; }
+.cuartos button:hover .n { color: var(--rojo); }
+.cuartos button::before { content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 3px; background: var(--rojo); z-index: 2; }
+
+/* ---- Fotos combinadas: montones de fotos parecidas dentro de una categoría (js/grupos.js) ---- */
+.grupos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(36px, 5vw, 64px) clamp(28px, 4vw, 56px); margin-bottom: clamp(64px, 9vw, 110px); padding: 14px 14px 0; }
+@media (max-width: 860px) { .grupos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .grupos { grid-template-columns: 1fr; } }
+.grupo { margin: 0; }
+.grupo button { display: block; width: 100%; padding: 0; }
+.pila { position: relative; display: block; aspect-ratio: 4 / 5; }
+.pila img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--pizarra-3);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .45); transition: transform .5s cubic-bezier(.2, .8, .2, 1), filter .3s; }
+.pila .capa-0 { z-index: 3; }
+.pila .capa-1 { z-index: 2; transform: rotate(-5deg) translate(-4%, 1%); filter: brightness(.7); }
+.pila .capa-2 { z-index: 1; transform: rotate(6deg) translate(5%, 2%); filter: brightness(.55); }
+.grupo button:hover .capa-0, .grupo button:focus-visible .capa-0 { transform: translateY(-6px); }
+.grupo button:hover .capa-1, .grupo button:focus-visible .capa-1 { transform: rotate(-10deg) translate(-12%, 2%); filter: brightness(.85); }
+.grupo button:hover .capa-2, .grupo button:focus-visible .capa-2 { transform: rotate(11deg) translate(13%, 3%); filter: brightness(.75); }
+.grupo button:focus-visible { outline: none; }
+.grupo button:focus-visible .capa-0 { outline: 2px solid var(--rojo); outline-offset: 4px; }
+.pila::before { content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 3px; background: var(--rojo); z-index: 4; }
+.grupo figcaption { display: flex; justify-content: center; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; padding-top: 20px; text-align: center; }
+.grupo figcaption b { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.2vw, 26px); line-height: 1.15; }
+.grupo figcaption span { font-family: var(--mano); font-size: 22px; line-height: 1; color: var(--rojo); transform: rotate(-3deg); }

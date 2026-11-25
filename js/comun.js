@@ -1,6 +1,8 @@
 /* Comportamiento común: menú, comparador antes/después, visor de fotos, tarjetas. */
 (function () {
   const P = window.PORTAFOLIO || [];
+  // Fotos nuevas que se suman a una categoría desde js/grupos.js (sin tocar datos.js)
+  P.forEach(c => ((window.EXTRA || {})[c.id] || []).forEach(n => { if (!c.fotos.some(f => f.f === `${c.id}/${n}`)) c.fotos.push({ f: `${c.id}/${n}`, t: '' }); }));
   const foto = (f) => `fotos/${f}.jpg`;
   const flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
   const params = new URLSearchParams(location.search);
@@ -131,6 +133,52 @@
       </div>`).join('');
   }
 
+  /* ---------- Fotos destacadas (carrusel de la portada) ---------- */
+  // Se desliza con el dedo, con las flechas o arrastrando con el mouse. Tocar una foto la abre en grande.
+  const riel = document.querySelector('.riel');
+  if (riel) {
+    const fotosD = [...riel.querySelectorAll('.destacada')];
+    const lista = fotosD.map(b => ({ f: b.dataset.f, t: b.dataset.t }));
+    const ant = document.querySelector('.carrusel-flecha.ant'), sig = document.querySelector('.carrusel-flecha.sig');
+    const paso = () => Math.max(fotosD[0].offsetWidth, riel.clientWidth - fotosD[0].offsetWidth);
+    const revisar = () => {
+      ant.disabled = riel.scrollLeft < 4;
+      sig.disabled = riel.scrollLeft + riel.clientWidth > riel.scrollWidth - 4;
+    };
+    ant.addEventListener('click', () => riel.scrollBy({ left: -paso() }));
+    sig.addEventListener('click', () => riel.scrollBy({ left: paso() }));
+    riel.addEventListener('scroll', revisar, { passive: true });
+    addEventListener('resize', revisar); revisar();
+    riel.addEventListener('keydown', (e) => {
+      if (e.target !== riel) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); riel.scrollBy({ left: paso() }); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); riel.scrollBy({ left: -paso() }); }
+    });
+    // Arrastrar con el mouse (con el dedo ya se desliza solo)
+    let x0 = null, s0 = 0, movido = false;
+    riel.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; x0 = e.clientX; s0 = riel.scrollLeft; movido = false; });
+    addEventListener('pointermove', (e) => {
+      if (x0 === null) return;
+      const d = e.clientX - x0;
+      if (!movido && Math.abs(d) > 6) { movido = true; riel.classList.add('arrastrando'); }
+      if (movido) riel.scrollLeft = s0 - d;
+    });
+    addEventListener('pointerup', () => {
+      if (x0 === null) return;
+      x0 = null;
+      if (movido) {
+        // al soltar, se acomoda en la foto más cercana
+        const s = riel.scrollLeft; riel.classList.remove('arrastrando'); riel.scrollLeft = s;
+        const w = fotosD[1] ? fotosD[1].offsetLeft - fotosD[0].offsetLeft : fotosD[0].offsetWidth;
+        riel.scrollTo({ left: Math.round(s / w) * w });
+      }
+    });
+    fotosD.forEach((b, k) => b.addEventListener('click', (e) => {
+      if (movido) { e.preventDefault(); movido = false; return; }   // fue un arrastre, no un clic
+      abrirVisor(lista, k);
+    }));
+  }
+
   /* ---------- Página de categoría ---------- */
   if (document.body.dataset.pagina === 'categoria') {
     const i = Math.max(0, P.findIndex(x => x.id === catActual));
@@ -171,19 +219,49 @@
         <li class="actual"><figure><img src="img/cuadros/3d/impresion-1.jpg" alt="Cuadro de cuarto medio de 2026" width="1000" height="1600" loading="lazy"><figcaption><b>2026</b>Mi diseño de ahora: azul noche, un filete dorado y letra serif, con el retrato, las fotos del curso y la lista ordenados en una grilla.</figcaption></figure></li>
       </ol>
       </div>`;
+    // Estrellas y luna: una foto en alta dividida en 4 partes (fotos/estrellas-y-luna/de-cerca/parte-1..4.jpg)
+    const CERCA = ['arriba a la izquierda', 'arriba a la derecha', 'abajo a la izquierda', 'abajo a la derecha']
+      .map((t, n) => ({ f: `estrellas-y-luna/de-cerca/parte-${n + 1}`, t: `Cielo en 4 partes · ${n + 1} de 4, ${t}` }));
+    if (c.id === 'estrellas-y-luna') html += `
+      <div class="de-cerca aparece">
+        <div>
+          <span class="etiqueta">Mírala de cerca</span>
+          <h2 class="titulo-seccion">Un cielo en cuatro partes</h2>
+          <p class="texto-suave">Esta foto tiene tantas estrellas que en una pantalla chica se pierden. Por eso la dividí en cuatro: toca una parte para verla en grande, con todo su detalle. Arriba a la izquierda está la Gran Nube de Magallanes.</p>
+          <p class="mano nota-cerca">toca una parte</p>
+        </div>
+        <div class="cuartos" role="group" aria-label="La foto del cielo dividida en cuatro partes">
+          ${CERCA.map((p, n) => `<button data-cerca="${n}" aria-label="Ver en grande la parte ${n + 1}, ${p.t.split(', ')[1]}"><img src="${foto(p.f)}" alt="" loading="lazy"><span class="n">${n + 1}</span></button>`).join('')}
+        </div>
+      </div>`;
+    // Fotos combinadas (js/grupos.js): las parecidas van juntas en un montón; al tocarlo se abren todas
+    const grupos = ((window.GRUPOS || {})[c.id] || []).map(g => ({ titulo: g.titulo, fotos: g.fotos.map(n => ({ f: `${c.id}/${n}`, t: g.titulo })) }));
+    const enGrupo = new Set(grupos.flatMap(g => g.fotos.map(f => f.f)));
+    const sueltas = c.fotos.filter(f => !enGrupo.has(f.f));
+    if (grupos.length) html += `
+      <div class="grupos">${grupos.map((g, n) => `
+        <figure class="grupo aparece">
+          <button data-g="${n}" aria-label="${g.titulo}: ver las ${g.fotos.length} fotos">
+            <span class="pila">${g.fotos.slice(0, 3).map((f, j) => `<img class="capa-${j}" src="${foto(f.f)}" alt="" loading="lazy">`).reverse().join('')}</span>
+          </button>
+          <figcaption><b>${g.titulo}</b><span>${g.fotos.length} ${g.fotos.length === 1 ? 'foto' : 'fotos'}</span></figcaption>
+        </figure>`).join('')}
+      </div>`;
     const figura = (f, k) => `
           <figure class="aparece"><button class="visor" data-k="${k}" aria-label="Ver foto ${k + 1} en grande"><img src="${foto(f.f)}" alt="${f.t || c.titulo + ' ' + (k + 1)}" loading="lazy"></button>${f.t ? `<figcaption>${f.t}</figcaption>` : ''}</figure>`;
     // Fotos "juntas": cada par va en una fila, una al lado de la otra, antes de la galería
     const pares = {};
-    c.fotos.forEach((f, k) => { if (f.par !== undefined) (pares[f.par] = pares[f.par] || []).push(figura(f, k)); });
+    sueltas.forEach((f, k) => { if (f.par !== undefined) (pares[f.par] = pares[f.par] || []).push(figura(f, k)); });
     html += Object.values(pares).map(p => `<div class="juntas">${p.join('')}</div>`).join('');
-    html += c.fotos.length
-      ? `<div class="galeria">${c.fotos.map((f, k) => f.par === undefined ? figura(f, k) : '').join('')}</div>`
-      : `<p class="vacio">Esta categoría está en proceso. Pronto habrá fotos aquí.</p>`;
+    html += sueltas.length
+      ? `<div class="galeria">${sueltas.map((f, k) => f.par === undefined ? figura(f, k) : '').join('')}</div>`
+      : grupos.length ? '' : `<p class="vacio">Esta categoría está en proceso. Pronto habrá fotos aquí.</p>`;
     gal.innerHTML = html;
     const comp = gal.querySelector('[data-comp]');
     if (comp) { comp.innerHTML = htmlComparador(c.comparar); comparador(comp.firstElementChild); }
-    gal.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => abrirVisor(c.fotos.map(f => ({ f: f.f, t: f.t || c.titulo })), +b.dataset.k)));
+    gal.querySelectorAll('[data-cerca]').forEach(b => b.addEventListener('click', () => abrirVisor(CERCA, +b.dataset.cerca)));
+    gal.querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => abrirVisor(grupos[+b.dataset.g].fotos, 0)));
+    gal.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => abrirVisor(sueltas.map(f => ({ f: f.f, t: f.t || c.titulo })), +b.dataset.k)));
 
     const ant = P[(i - 1 + P.length) % P.length], sig = P[(i + 1) % P.length];
     document.querySelector('.navegacion-cat').innerHTML = `

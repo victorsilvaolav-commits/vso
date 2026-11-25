@@ -7,7 +7,7 @@
   <meta name="description" content="Portafolio de Víctor Silva, diseñador gráfico y fotógrafo de Curicó: fotos de noche, naturaleza, conciertos, marchas y fotomontajes.">
   <meta name="theme-color" content="#1A2129">
   <link rel="icon" href="img/vso-oficial-simbolo-oscuro.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/estilo.css?v=7">
+  <link rel="stylesheet" href="css/estilo.css?v=9">
 </head>
 <body data-pagina="inicio">
 
@@ -22,7 +22,7 @@
           <div class="submenu"></div>
         </div>
         <a href="index.html#cuadros">Cuadros</a>
-        <a href="ajustar.html">Ajustar fotos</a>
+        <a href="ajustar.html">VSO App</a>
         <a href="index.html#sobre-mi">Sobre mí</a>
         <a href="index.html#contacto">Contacto</a>
       </nav>
@@ -58,6 +58,27 @@
         <a class="pieza" data-n="8" data-a="1.25" href="categoria.html?c=naturaleza"><span class="foto"><img src="fotos/mirada/08-estrellas.jpg" alt="Árboles al anochecer reflejados en el agua"></span><span class="nota">naturaleza</span></a>
       </div>
       <p class="mano pista">toca una foto y te llevo a su sección</p>
+    </div>
+  </section>
+
+  <!-- 2b · LLAMADO A VSO App (la herramienta de ajustar fotos: ajustar.html) -->
+  <section class="app-cta" id="vso-app" aria-label="VSO App">
+    <div class="contenedor">
+      <div class="app-caja aparece">
+        <div class="app-texto">
+          <span class="etiqueta">VSO App · gratis</span>
+          <p class="mano app-pregunta">¿tienes fotos de WhatsApp?</p>
+          <h2 class="titulo-seccion">Mejóralas con <span class="subrayar">VSO App<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12C60 5 130 15 197 8"/></svg></span></h2>
+          <p class="texto-suave">¿Quedaron muy oscuras, muy blancas o con colores raros? VSO App las ajusta sola: corrige la luz, el color y las caras con el mismo ajuste que uso en las fotos que imprimo. Es gratis, no hay que instalar nada y tus fotos no se suben a internet.</p>
+          <a class="boton" href="ajustar.html">Mejorar mis fotos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <!-- Ejemplo ilustrativo (la misma foto oscurecida y aclarada con CSS), no es un resultado del programa -->
+        <div class="app-muestra" aria-hidden="true">
+          <figure class="oscura"><span><img src="fotos/mirada/01-matrimonio.jpg" alt="" loading="lazy"></span><figcaption>muy oscura</figcaption></figure>
+          <figure class="blanca"><span><img src="fotos/mirada/01-matrimonio.jpg" alt="" loading="lazy"></span><figcaption>muy blanca</figcaption></figure>
+          <figure class="bien"><span><img src="fotos/mirada/01-matrimonio.jpg" alt="" loading="lazy"></span><figcaption>¡así!</figcaption></figure>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -104,20 +125,40 @@
     </div>
   </section>
 
-  <!-- 4 · PORTAFOLIO -->
+  <!-- 4 · FOTOS DESTACADAS: carrusel de 12 fotos. Se desliza de lado; al tocar una se ve en grande (no lleva a otra página).
+       Para cambiar una foto: data-f es la ruta dentro de fotos/ (sin .jpg) y data-t el nombre que sale en grande. -->
   <section class="seccion" id="portafolio">
     <div class="contenedor">
       <div class="cabecera-seccion aparece">
         <div>
           <span class="etiqueta">Portafolio</span>
-          <h2 class="titulo-seccion">Lo que <span class="subrayar">miro<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12C60 4 130 16 197 7"/></svg></span></h2>
+          <h2 class="titulo-seccion">Fotos <span class="subrayar">destacadas<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12C60 4 130 16 197 7"/></svg></span></h2>
         </div>
         <div>
-          <p class="texto-suave">Desde el cielo de noche hasta la calle, pasando por lo más pequeño del jardín. Elige una categoría y mira las fotos.</p>
-          <p class="mano nota-elige">elige una<svg class="flecha-mano abajo" viewBox="0 0 60 70" aria-hidden="true"><path d="M14 4C40 18 44 40 34 62M22 52l12 12 10-15"/></svg></p>
+          <p class="texto-suave">Doce fotos que me gustan mucho, de noche, de día, de cerca y en la calle. Toca una para verla en grande.</p>
+          <p class="mano nota-elige">desliza para el lado<svg class="flecha-mano" viewBox="0 0 120 60" aria-hidden="true"><path d="M4 44C34 12 76 8 110 28M96 16l15 13-17 8"/></svg></p>
         </div>
       </div>
-      <div class="categorias"></div>
+      <div class="carrusel aparece">
+        <div class="riel" tabindex="0" role="region" aria-label="Fotos destacadas: desliza hacia el lado">
+          <button class="destacada" data-f="estrellas-y-luna/18175778587002262" data-t="La Vía Láctea"><span class="foto"><img src="fotos/estrellas-y-luna/18175778587002262.jpg" alt="La Vía Láctea sobre unas flores amarillas" loading="lazy" draggable="false"></span><span class="nota">vía láctea</span></button>
+          <button class="destacada" data-f="animales/17906070361861797" data-t="Un gato de cerca"><span class="foto"><img src="fotos/animales/17906070361861797.jpg" alt="La cara de un gato atigrado de ojos verdes" loading="lazy" draggable="false"></span><span class="nota">gato</span></button>
+          <button class="destacada" data-f="naturaleza/17909546533840902" data-t="Atardecer rojo"><span class="foto"><img src="fotos/naturaleza/17909546533840902.jpg" alt="Cielo rojo de atardecer sobre los árboles" loading="lazy" draggable="false"></span><span class="nota">atardecer</span></button>
+          <button class="destacada" data-f="planta-y-agua/gota-sobre-hoja-1" data-t="Gota sobre una hoja"><span class="foto"><img src="fotos/planta-y-agua/gota-sobre-hoja-1.jpg" alt="Gotas de agua sobre una hoja verde" loading="lazy" draggable="false"></span><span class="nota">una gota</span></button>
+          <button class="destacada" data-f="conciertos/18159008599273970" data-t="En pleno concierto"><span class="foto"><img src="fotos/conciertos/18159008599273970.jpg" alt="Cantante saltando en el escenario" loading="lazy" draggable="false"></span><span class="nota">concierto</span></button>
+          <button class="destacada" data-f="ciudad-y-arquitectura/07-castillo-niebla" data-t="Castillo en la niebla"><span class="foto"><img src="fotos/ciudad-y-arquitectura/07-castillo-niebla.jpg" alt="Un castillo sobre la roca, entre la niebla" loading="lazy" draggable="false"></span><span class="nota">castillo</span></button>
+          <button class="destacada" data-f="estrellas-y-luna/17998935712445946" data-t="Eclipse de luna"><span class="foto"><img src="fotos/estrellas-y-luna/17998935712445946.jpg" alt="La luna roja durante un eclipse" loading="lazy" draggable="false"></span><span class="nota">eclipse</span></button>
+          <button class="destacada" data-f="animales/17858092010621560" data-t="Araña en su tela"><span class="foto"><img src="fotos/animales/17858092010621560.jpg" alt="Una araña en el centro de su tela" loading="lazy" draggable="false"></span><span class="nota">araña</span></button>
+          <button class="destacada" data-f="ciudad-y-arquitectura/01-esquina-al-cielo" data-t="Esquina al cielo"><span class="foto"><img src="fotos/ciudad-y-arquitectura/01-esquina-al-cielo.jpg" alt="La esquina de un edificio apuntando al cielo" loading="lazy" draggable="false"></span><span class="nota">esquina</span></button>
+          <button class="destacada" data-f="naturaleza/17937169426577959" data-t="Reflejo en el agua"><span class="foto"><img src="fotos/naturaleza/17937169426577959.jpg" alt="Árboles y nubes reflejados en el agua" loading="lazy" draggable="false"></span><span class="nota">reflejo</span></button>
+          <button class="destacada" data-f="marchas/17897136385626492" data-t="El agua es un derecho"><span class="foto"><img src="fotos/marchas/17897136385626492.jpg" alt="Lienzo en una marcha: porque el agua es un derecho humano" loading="lazy" draggable="false"></span><span class="nota">marcha</span></button>
+          <button class="destacada" data-f="planta-y-agua/17842586915610245" data-t="Helecho con gotas"><span class="foto"><img src="fotos/planta-y-agua/17842586915610245.jpg" alt="Hojas de helecho cubiertas de gotas" loading="lazy" draggable="false"></span><span class="nota">helecho</span></button>
+        </div>
+        <div class="carrusel-flechas">
+          <button class="carrusel-flecha ant" aria-label="Fotos anteriores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="carrusel-flecha sig" aria-label="Fotos siguientes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -164,7 +205,8 @@
   </footer>
 
   <script src="js/datos.js"></script>
-  <script src="js/comun.js?v=6"></script>
+  <script src="js/grupos.js?v=2"></script>
+  <script src="js/comun.js?v=7"></script>
   <script src="js/intro.js?v=3"></script>
   <script src="js/cuadros.js?v=3g"></script>
 </body>
